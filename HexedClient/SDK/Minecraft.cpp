@@ -3,7 +3,6 @@
 Minecraft::Minecraft(jobject obj)
 {
 	MinecraftObj = obj;
-	JNIHelper::env->DeleteLocalRef(obj);
 }
 
 jclass Minecraft::GetClass()

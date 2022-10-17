@@ -1,7 +1,8 @@
-﻿  LaunchWrapper.cpp
-C:\Users\Umbra\source\repos\HexedClient\HexedClient\SDK\LaunchWrapper.cpp(22,1): warning C4506: Keine Definition für Inlinefunktion "jclass JNIHelper::ForgeFindClass(const char *)"
+﻿  dllmain.cpp
+C:\Users\Umbra\Documents\GitHub\MC-HexedClient\HexedClient\Wrapper\window.hpp(52,1): warning C4267: "Argument": Konvertierung von "size_t" nach "int", Datenverlust möglich
   Code wird generiert.
-  Previous IPDB and IOBJ mismatch, fall back to full compilation.
-  All 1350 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  122 of 1368 functions ( 8.9%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    23 functions had inline decision re-evaluated but remain unchanged
   Codegenerierung ist abgeschlossen.
-  HexedClient.vcxproj -> C:\Users\Umbra\source\repos\HexedClient\x64\Release\HexedClient.dll
+  HexedClient.vcxproj -> C:\Users\Umbra\Documents\GitHub\MC-HexedClient\x64\Release\HexedClient.dll

@@ -9,5 +9,5 @@ private:
 
 public:
 	inline static JNIEnv* env;
-	inline static jclass ForgeFindClass(const char*);
+	static jclass ForgeFindClass(const char*);
 };

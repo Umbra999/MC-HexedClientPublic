@@ -1,13 +1,12 @@
 #include "LaunchWrapper.hpp"
 #include "JNIHelper.hpp"
+#include "../Wrapper/Logger.hpp"
 
 jclass LaunchWrapper::getMinecraftClass()
 {
 	if (minecraftClass == NULL)
 	{
-		jclass Instance = JNIHelper::ForgeFindClass("net.minecraft.client.Minecraft");
-		minecraftClass = Instance;
-		JNIHelper::env->DeleteLocalRef(Instance);
+		minecraftClass = JNIHelper::ForgeFindClass("net.minecraft.client.Minecraft");
 	}
 	return minecraftClass;
 }

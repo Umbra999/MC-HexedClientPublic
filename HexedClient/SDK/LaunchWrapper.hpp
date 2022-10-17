@@ -4,9 +4,8 @@
 class LaunchWrapper
 {
 private:
-
-public:
 	inline static jclass minecraftClass;
-	inline static jclass getMinecraftClass();
-	inline static Minecraft getMinecraft();
+public:
+	static jclass getMinecraftClass();
+	static Minecraft getMinecraft();
 };

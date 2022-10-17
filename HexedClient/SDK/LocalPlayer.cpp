@@ -3,7 +3,6 @@
 LocalPlayer::LocalPlayer(jobject obj)
 {
 	LocalPlayerObj = obj;
-	JNIHelper::env->DeleteLocalRef(obj);
 }
 
 jclass LocalPlayer::GetClass()

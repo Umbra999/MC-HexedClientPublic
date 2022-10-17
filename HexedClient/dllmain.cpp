@@ -5,6 +5,7 @@
 #include "Core/GUI.hpp"
 #include "SDK/JNIHelper.hpp"
 #include "Wrapper/Logger.hpp"
+#include "SDK/LaunchWrapper.hpp"
 
 HMODULE HModule;
 
@@ -33,12 +34,10 @@ void Initialize()
 
         if (res == JNI_OK && JNIHelper::env != nullptr)
         {
-            vm->DetachCurrentThread();
-
-            /*while (LaunchWrapper::getMinecraft().MinecraftObj == NULL || LaunchWrapper::getMinecraft().getLocalPlayer().LocalPlayerObj == NULL)
+            while (LaunchWrapper::getMinecraft().MinecraftObj == NULL || LaunchWrapper::getMinecraft().getLocalPlayer().LocalPlayerObj == NULL)
             {
                 Sleep(1);
-            }*/
+            }
 
             Patching::ApplyPatches();
             while (!Settings::ShouldUninject)
@@ -54,6 +53,7 @@ void Initialize()
     FreeConsole();
     Patching::UnapplyPatches();
     GUI::Delete();
+    vm->DetachCurrentThread();
     FreeLibraryAndExitThread(HModule, 0);
 }
 
