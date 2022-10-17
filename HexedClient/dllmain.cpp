@@ -6,6 +6,7 @@
 #include "SDK/JNIHelper.hpp"
 #include "Wrapper/Logger.hpp"
 #include "SDK/LaunchWrapper.hpp"
+#include "Core/Handler.hpp"
 
 HMODULE HModule;
 
@@ -34,7 +35,11 @@ void Initialize()
 
         if (res == JNI_OK && JNIHelper::env != nullptr)
         {
-            while (LaunchWrapper::getMinecraft().MinecraftObj == NULL || LaunchWrapper::getMinecraft().getLocalPlayer().LocalPlayerObj == NULL)
+            std::string Mappings = LaunchWrapper::IsForge() ? "FORGE" : "VANILLA";
+            Logger::Log("Minecraft running on: " + Mappings);
+
+            Logger::Log("Waiting for World to Initialize...");
+            while (LaunchWrapper::getMinecraft().MinecraftObj == NULL || LaunchWrapper::getMinecraft().getWorld().WorldObj == NULL)
             {
                 Sleep(1);
             }
@@ -42,8 +47,8 @@ void Initialize()
             Patching::ApplyPatches();
             while (!Settings::ShouldUninject)
             {
-                //Handler::ExternalWork();
-                //Handler::OnUpdatePatch(); // for now 
+                Handler::ExternalWork();
+                Handler::OnUpdatePatch(); // for now 
                 Sleep(50);
             }
         }
@@ -63,7 +68,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
     {
         case DLL_PROCESS_ATTACH:
             HModule = hModule;
-            DisableThreadLibraryCalls(hModule);
+            DisableThreadLibraryCalls(HModule);
             CreateThread(NULL, NULL, reinterpret_cast<LPTHREAD_START_ROUTINE>(Initialize), NULL, NULL, NULL);
             break;
     }

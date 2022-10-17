@@ -2,6 +2,7 @@
 #include "../Wrapper/Logger.hpp"
 #include "../minhook/MinHook.h"
 #include "GUI.hpp"
+#include "../SDK/LaunchWrapper.hpp"
 
 typedef void(*OnUpdate) ();
 OnUpdate originalOnUpdate;
@@ -12,38 +13,37 @@ void OnUpdatePatch()
 	originalOnUpdate();
 }
 
-typedef void(*SetSprinting) (bool);
+typedef void(*SetSprinting) ();
 SetSprinting originalSetSprinting;
 SetSprinting patchedSetSprinting;
-void SetSprintingPatch(bool sprinting)
+void SetSprintingPatch()
 {
 	//handler.OnUpdatePatch();
-	originalSetSprinting(true); // testing
+	originalSetSprinting();
 }
 
 typedef void(*twglSwapBuffers) (HDC);
 twglSwapBuffers originalSwapBuffers;
-void* patchedSwapBuffers;
+twglSwapBuffers patchedSwapBuffers;
 void SwapBuffersPatch(HDC hDc)
 {
-	/*Logger::Log("Swapped Buffers");*/
 	GUI::OnSwapBuffers(hDc);
 	originalSwapBuffers(hDc);
 }
 
 void Patching::PatchOnUpdate()
 {
-	//Minecraft minecraftInstance = LaunchWrapper::getMinecraft();
-	//if (minecraftInstance.MinecraftObj == NULL) return;
+	Minecraft minecraftInstance = LaunchWrapper::getMinecraft();
+	if (minecraftInstance.MinecraftObj == NULL) return;
 
-	//jmethodID OnUpdateMethod = JNIHelper::env->GetMethodID(minecraftInstance.GetClass(), "func_71411_J", "()V"); // maybe i should use func_99999_d instead?
-	//if (OnUpdateMethod == NULL) return;
+	jmethodID OnUpdateMethod = JNIHelper::env->GetMethodID(minecraftInstance.GetClass(), "func_71411_J", "()V"); // maybe i should use func_99999_d instead?
+	if (OnUpdateMethod == NULL) return;
 
-	//patchedOnUpdate = OnUpdate(*(unsigned __int64*)(*(unsigned __int64*)OnUpdateMethod + 0x40));
+	patchedOnUpdate = OnUpdate(*(unsigned __int64*)(*(unsigned __int64*)OnUpdateMethod + 0x40));
 
-	//MH_CreateHook(patchedOnUpdate, &OnUpdatePatch, (void**)(&originalOnUpdate));
+	MH_CreateHook(patchedOnUpdate, &OnUpdatePatch, (void**)(&originalOnUpdate));
 
-	//Logger::LogDebug("OnUpdate Patched");
+	Logger::LogDebug("OnUpdate Patched");
 }
 
 void Patching::PatchSetSprinting()
@@ -69,7 +69,7 @@ void Patching::PatchSetSprinting()
 
 void Patching::PatchSwapBuffers()
 {
-	patchedSwapBuffers = (void*)GetProcAddress(GetModuleHandle("opengl32.dll"), "wglSwapBuffers");
+	patchedSwapBuffers = (twglSwapBuffers)GetProcAddress(GetModuleHandleA("opengl32.dll"), "wglSwapBuffers");
 	MH_CreateHook(patchedSwapBuffers, &SwapBuffersPatch, (LPVOID*)&originalSwapBuffers);
 	Logger::Log("Swap Buffer Patched");
 }

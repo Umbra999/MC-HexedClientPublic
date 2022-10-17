@@ -30,7 +30,7 @@ LocalPlayer Minecraft::getLocalPlayer()
 	return LocalPlayer(Instance);
 }
 
-jobject Minecraft::getWorld()
+World Minecraft::getWorld()
 {
 	if (MinecraftObj == NULL) return NULL;
 
@@ -40,7 +40,9 @@ jobject Minecraft::getWorld()
 	jfieldID getWorld = JNIHelper::env->GetFieldID(MinecraftClass, "field_71441_e", "Lnet/minecraft/client/multiplayer/WorldClient;");
 	if (getWorld == NULL) return NULL;
 
-	return JNIHelper::env->GetObjectField(MinecraftObj, getWorld);
+	jobject Instance = JNIHelper::env->GetObjectField(MinecraftObj, getWorld);
+
+	return World(Instance);
 }
 
 void Minecraft::SetLeftClickDelay(int count)

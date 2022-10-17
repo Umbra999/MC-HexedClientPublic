@@ -1,5 +1,6 @@
 #pragma once
 #include "LocalPlayer.hpp"
+#include "World.hpp"
 
 class Minecraft
 {
@@ -10,7 +11,7 @@ public:
 	jclass GetClass();
 
 	LocalPlayer getLocalPlayer();
-	jobject getWorld();
+	World getWorld();
 	void SetLeftClickDelay(int count);
 	void SetRightClickDelay(int count);
 	void LeftClick();

@@ -151,6 +151,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Core\GUI.hpp" />
+    <ClInclude Include="Core\Handler.hpp" />
     <ClInclude Include="Core\Patching.hpp" />
     <ClInclude Include="Core\Settings.hpp" />
     <ClInclude Include="framework.h" />
@@ -186,6 +187,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\GUI.cpp" />
+    <ClCompile Include="Core\Handler.cpp" />
     <ClCompile Include="Core\Patching.cpp" />
     <ClCompile Include="Core\Settings.cpp" />
     <ClCompile Include="dllmain.cpp" />
@@ -205,6 +207,8 @@
     <ClCompile Include="SDK\LocalPlayer.cpp" />
     <ClCompile Include="SDK\Minecraft.cpp" />
     <ClCompile Include="SDK\World.cpp" />
+    <ClCompile Include="Wrapper\Logger.cpp" />
+    <ClCompile Include="Wrapper\Utils.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

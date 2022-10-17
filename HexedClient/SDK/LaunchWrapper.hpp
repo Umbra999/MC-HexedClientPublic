@@ -8,4 +8,5 @@ private:
 public:
 	static jclass getMinecraftClass();
 	static Minecraft getMinecraft();
+	static bool IsForge();
 };

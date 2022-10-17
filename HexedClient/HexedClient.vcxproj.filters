@@ -132,6 +132,9 @@
     <ClInclude Include="JNI\jvmti.h">
       <Filter>JNI</Filter>
     </ClInclude>
+    <ClInclude Include="Core\Handler.hpp">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -193,6 +196,15 @@
     </ClCompile>
     <ClCompile Include="SDK\JNIHelper.cpp">
       <Filter>SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="Wrapper\Logger.cpp">
+      <Filter>Wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="Wrapper\Utils.cpp">
+      <Filter>Wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Handler.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
