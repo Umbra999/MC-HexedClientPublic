@@ -5,27 +5,53 @@ LocalPlayer::LocalPlayer(jobject obj)
 	LocalPlayerObj = obj;
 }
 
-jclass LocalPlayer::GetClass()
+jobject LocalPlayer::GetCurrentObject()
+{
+	return LocalPlayerObj;
+}
+
+jclass LocalPlayer::GetCurrentClass()
 {
 	if (LocalPlayerObj == NULL) return NULL;
+	if (CurrentClass == NULL) CurrentClass = JNIHelper::env->GetObjectClass(LocalPlayerObj);
 
-	jclass LocalPlayerClass = JNIHelper::env->GetObjectClass(LocalPlayerObj);
-	if (LocalPlayerClass == NULL) return NULL;
+	return CurrentClass;
+}
 
-	return LocalPlayerClass;
+NetHandlerPlayClient LocalPlayer::getNetHandlerPlayClient()
+{
+	if (GetCurrentClass() == NULL) return NULL;
+	if (NetHandlerPlayClientInstance.GetCurrentClass() == NULL)
+	{
+		jfieldID getNNetHandlerPlayClient = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71174_a", "Lnet/minecraft/client/network/NetHandlerPlayClient;");
+		if (getNNetHandlerPlayClient == NULL) return NULL;
+		jobject Instance = JNIHelper::env->GetObjectField(LocalPlayerObj, getNNetHandlerPlayClient);
+		NetHandlerPlayClientInstance = NetHandlerPlayClient(Instance);
+	}
+
+	return NetHandlerPlayClientInstance;
 }
 
 void LocalPlayer::setSprinting(jboolean sprinting)
 {
-	if (LocalPlayerObj == NULL) return;
+	if (GetCurrentClass() == NULL) return;
+	if (setSprintingMethodID == NULL)
+	{
+		setSprintingMethodID = JNIHelper::env->GetMethodID(GetCurrentClass(), "func_70031_b", "(Z)V");
+		if (setSprintingMethodID == NULL) return;
+	}
 
-	jclass LocalPlayerClass = GetClass();
-	if (LocalPlayerClass == NULL) return;
+	JNIHelper::env->CallVoidMethod(LocalPlayerObj, setSprintingMethodID, sprinting);
+}
 
-	jmethodID setSprinting = JNIHelper::env->GetMethodID(LocalPlayerClass, "func_70031_b", "(Z)V");
-	if (setSprinting == NULL) return;
+void LocalPlayer::swingItem()
+{
+	if (GetCurrentClass() == NULL) return;
+	if (swingItemMethodID == NULL)
+	{
+		swingItemMethodID = JNIHelper::env->GetMethodID(GetCurrentClass(), "func_71038_i", "()V");
+		if (swingItemMethodID == NULL) return;
+	}
 
-	JNIHelper::env->CallVoidMethod(LocalPlayerObj, setSprinting, sprinting);
-
-	JNIHelper::env->DeleteLocalRef(LocalPlayerClass);
+	JNIHelper::env->CallVoidMethod(LocalPlayerObj, swingItemMethodID);
 }

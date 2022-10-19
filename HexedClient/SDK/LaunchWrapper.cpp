@@ -10,16 +10,19 @@ jclass LaunchWrapper::getMinecraftClass()
 
 Minecraft LaunchWrapper::getMinecraft()
 {
-	jfieldID findMinecraft = JNIHelper::env->GetStaticFieldID(getMinecraftClass(), "field_71432_P", "Lnet/minecraft/client/Minecraft;");
-	if (findMinecraft == NULL) return NULL;
-	jobject Instance = JNIHelper::env->GetStaticObjectField(getMinecraftClass(), findMinecraft);
-	return Minecraft(Instance);
+	if (getMinecraftClass() == NULL) return NULL;
+	if (minecraftInstance.GetCurrentClass() == NULL)
+	{
+		jfieldID findMinecraft = JNIHelper::env->GetStaticFieldID(getMinecraftClass(), "field_71432_P", "Lnet/minecraft/client/Minecraft;");
+		if (findMinecraft == NULL) return NULL;
+		jobject Instance = JNIHelper::env->GetStaticObjectField(getMinecraftClass(), findMinecraft);
+		minecraftInstance = Minecraft(Instance);
+	}
+	return minecraftInstance;
 }
 
 bool LaunchWrapper::IsForge()
 {
-	jclass ForgeClass = JNIHelper::env->FindClass("net/minecraftforge/common/ForgeVersion");
-	if (ForgeClass == NULL) return false;
-	JNIHelper::env->DeleteLocalRef(ForgeClass);
-	return true;
+	if (forgeClass == NULL) forgeClass = JNIHelper::env->FindClass("net/minecraftforge/common/ForgeVersion");
+	return forgeClass != NULL;
 }

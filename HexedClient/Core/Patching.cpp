@@ -9,17 +9,23 @@ OnUpdate originalOnUpdate;
 OnUpdate patchedOnUpdate;
 void OnUpdatePatch()
 {
-	//handler.OnUpdatePatch();
 	originalOnUpdate();
 }
 
-typedef void(*SetSprinting) ();
+typedef void(*OnTick) ();
+OnTick originalOnTick;
+OnTick patchedOnTick;
+void OnTickPatch()
+{
+	originalOnTick();
+}
+
+typedef void(*SetSprinting) (jboolean);
 SetSprinting originalSetSprinting;
 SetSprinting patchedSetSprinting;
-void SetSprintingPatch()
+void SetSprintingPatch(jboolean state)
 {
-	//handler.OnUpdatePatch();
-	originalSetSprinting();
+	originalSetSprinting(state);
 }
 
 typedef void(*twglSwapBuffers) (HDC);
@@ -34,9 +40,9 @@ void SwapBuffersPatch(HDC hDc)
 void Patching::PatchOnUpdate()
 {
 	Minecraft minecraftInstance = LaunchWrapper::getMinecraft();
-	if (minecraftInstance.MinecraftObj == NULL) return;
+	if (minecraftInstance.GetCurrentClass() == NULL) return;
 
-	jmethodID OnUpdateMethod = JNIHelper::env->GetMethodID(minecraftInstance.GetClass(), "func_71411_J", "()V"); // maybe i should use func_99999_d instead?
+	jmethodID OnUpdateMethod = JNIHelper::env->GetMethodID(minecraftInstance.GetCurrentClass(), "func_99999_d", "()V"); // maybe i should use func_71411_J instead?
 	if (OnUpdateMethod == NULL) return;
 
 	patchedOnUpdate = OnUpdate(*(unsigned __int64*)(*(unsigned __int64*)OnUpdateMethod + 0x40));
@@ -46,25 +52,37 @@ void Patching::PatchOnUpdate()
 	Logger::LogDebug("OnUpdate Patched");
 }
 
+void Patching::PatchOnTick()
+{
+	Minecraft minecraftInstance = LaunchWrapper::getMinecraft();
+	if (minecraftInstance.GetCurrentClass() == NULL) return;
+
+	jmethodID OnTickMethod = JNIHelper::env->GetMethodID(minecraftInstance.GetCurrentClass(), "func_71407_l", "()V");
+	if (OnTickMethod == NULL) return;
+
+	patchedOnTick = OnTick(*(unsigned __int64*)(*(unsigned __int64*)OnTickMethod + 0x40));
+
+	MH_CreateHook(patchedOnTick, &OnTickPatch, (void**)(&originalOnTick));
+
+	Logger::LogDebug("OnTick Patched");
+}
+
 void Patching::PatchSetSprinting()
 {
-	/*Minecraft minecraftInstance = LaunchWrapper::getMinecraft();
-	if (minecraftInstance.MinecraftObj == NULL) return;
+	Minecraft minecraftInstance = LaunchWrapper::getMinecraft();
+	if (minecraftInstance.GetCurrentClass() == NULL) return;
 
-	LocalPlayer localPlayerInstance = minecraftInstance.getLocalPlayer();
-	if (localPlayerInstance.LocalPlayerObj == NULL) return;
+	LocalPlayer localPlayerInstance = LaunchWrapper::getMinecraft().getLocalPlayer();
+	if (localPlayerInstance.GetCurrentClass() == NULL) return;
 
-	jclass LocalPlayerClass = localPlayerInstance.GetClass();
-	if (LocalPlayerClass == NULL) return;
-
-	jmethodID SetSprintingMethod = JNIHelper::env->GetMethodID(LocalPlayerClass, "func_70031_b", "(Z)V");
+	jmethodID SetSprintingMethod = JNIHelper::env->GetMethodID(localPlayerInstance.GetCurrentClass(), "func_70031_b", "(Z)V");
 	if (SetSprintingMethod == NULL) return;
 
 	patchedSetSprinting = SetSprinting(*(unsigned __int64*)(*(unsigned __int64*)SetSprintingMethod + 0x40));
 
-	MH_CreateHook(patchedSetSprinting, &OnUpdatePatch, (void**)(&originalSetSprinting));
+	MH_CreateHook(patchedSetSprinting, &SetSprintingPatch, (void**)(&originalSetSprinting));
 
-	Logger::LogDebug("SetSprinting Patched");*/
+	Logger::LogDebug("SetSprinting Patched");
 }
 
 void Patching::PatchSwapBuffers()
@@ -80,6 +98,7 @@ void Patching::ApplyPatches()
 
 	PatchSwapBuffers();
 	PatchOnUpdate();
+	PatchOnTick();
 	PatchSetSprinting();
 
 	MH_EnableHook(MH_ALL_HOOKS);

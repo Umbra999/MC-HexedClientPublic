@@ -175,15 +175,20 @@
     <ClInclude Include="minhook\hde\table64.h" />
     <ClInclude Include="minhook\MinHook.h" />
     <ClInclude Include="minhook\trampoline.h" />
+    <ClInclude Include="SDK\Entity.hpp" />
+    <ClInclude Include="SDK\EntityLivingBase.hpp" />
     <ClInclude Include="SDK\JNIHelper.hpp" />
     <ClInclude Include="SDK\LaunchWrapper.hpp" />
     <ClInclude Include="SDK\LocalPlayer.hpp" />
     <ClInclude Include="SDK\Minecraft.hpp" />
+    <ClInclude Include="SDK\EntityPlayer.hpp" />
+    <ClInclude Include="SDK\NetHandlerPlayClient.hpp" />
+    <ClInclude Include="SDK\NetworkManager.hpp" />
+    <ClInclude Include="SDK\NetworkPlayerInfo.hpp" />
+    <ClInclude Include="SDK\Utils\JavaUtil.hpp" />
     <ClInclude Include="SDK\World.hpp" />
     <ClInclude Include="Wrapper\Logger.hpp" />
-    <ClInclude Include="Wrapper\main_window_finder.hpp" />
     <ClInclude Include="Wrapper\Utils.hpp" />
-    <ClInclude Include="Wrapper\window.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\GUI.cpp" />
@@ -202,10 +207,17 @@
     <ClCompile Include="minhook\hde\hde64.c" />
     <ClCompile Include="minhook\hook.c" />
     <ClCompile Include="minhook\trampoline.c" />
+    <ClCompile Include="SDK\Entity.cpp" />
+    <ClCompile Include="SDK\EntityLivingBase.cpp" />
     <ClCompile Include="SDK\JNIHelper.cpp" />
     <ClCompile Include="SDK\LaunchWrapper.cpp" />
     <ClCompile Include="SDK\LocalPlayer.cpp" />
     <ClCompile Include="SDK\Minecraft.cpp" />
+    <ClCompile Include="SDK\EntityPlayer.cpp" />
+    <ClCompile Include="SDK\NetHandlerPlayClient.cpp" />
+    <ClCompile Include="SDK\NetworkManager.cpp" />
+    <ClCompile Include="SDK\NetworkPlayerInfo.cpp" />
+    <ClCompile Include="SDK\Utils\JavaUtil.cpp" />
     <ClCompile Include="SDK\World.cpp" />
     <ClCompile Include="Wrapper\Logger.cpp" />
     <ClCompile Include="Wrapper\Utils.cpp" />

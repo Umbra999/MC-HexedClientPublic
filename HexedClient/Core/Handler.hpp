@@ -2,7 +2,10 @@
 
 class Handler
 {
+private:
+	static int CurrentTick;
+
 public:
-	static void ExternalWork();
-	static void OnUpdatePatch();
+	static void OnTick();
+	static void DoKeyBinds();
 };

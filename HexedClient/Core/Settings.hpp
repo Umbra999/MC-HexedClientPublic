@@ -1,13 +1,16 @@
 #pragma once
-#include "../Wrapper/window.hpp"
 
 class Settings
 {
 public:
-	static window_t MainWindow;
 	static bool ShouldUninject;
+	static int DebugFPS;
 	static bool AutoSprint;
-	static bool RemoveLClickDelay;
-	static bool RemoveRClickDelay;
-	static bool LeftClickMultiplier;
+	static bool NoHitDelay;
+	static bool NoBuildDelay;
+	static bool Autoclicker;
+	static int AutoclickerCount;
+	static bool AntiBot;
+	static bool FrameSpoof;
+	static int FrameSpoofValue;
 };

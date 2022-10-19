@@ -1,7 +1,6 @@
 #include "Wrapper/Utils.hpp"
 #include "Core/Patching.hpp"
 #include "Core/Settings.hpp"
-#include "Wrapper/main_window_finder.hpp"
 #include "Core/GUI.hpp"
 #include "SDK/JNIHelper.hpp"
 #include "Wrapper/Logger.hpp"
@@ -12,12 +11,6 @@ HMODULE HModule;
 
 void Initialize()
 {
-    while (Settings::MainWindow == NULL)
-    {
-        Settings::MainWindow = main_window_finder_t().find_main_window(GetCurrentProcessId());
-        Sleep(1);
-    }
-
     AllocConsole();
     SetConsoleOutputCP(65001);
     freopen_s(reinterpret_cast<FILE**>(stdin), "CONIN$", "r", stdin);
@@ -31,15 +24,19 @@ void Initialize()
     if (JNI_GetCreatedJavaVMs(&vm, 1, &count) == JNI_OK && count > 0)
     {
         jint res = vm->GetEnv((void**)&JNIHelper::env, JNI_VERSION_1_6);
-        if (res == JNI_EDETACHED) res = vm->AttachCurrentThread((void**)&JNIHelper::env, nullptr);
+        if (res == JNI_EDETACHED)
+        {
+            res = vm->AttachCurrentThread((void**)&JNIHelper::env, nullptr);
+            Logger::LogDebug("Attached JVM to current Thread");
+        }
 
-        if (res == JNI_OK && JNIHelper::env != nullptr)
+        if (res == JNI_OK)
         {
             std::string Mappings = LaunchWrapper::IsForge() ? "FORGE" : "VANILLA";
             Logger::Log("Minecraft running on: " + Mappings);
 
             Logger::Log("Waiting for World to Initialize...");
-            while (LaunchWrapper::getMinecraft().MinecraftObj == NULL || LaunchWrapper::getMinecraft().getWorld().WorldObj == NULL)
+            while (LaunchWrapper::getMinecraft().GetCurrentClass() == NULL || LaunchWrapper::getMinecraft().getWorld().GetCurrentClass() == NULL)
             {
                 Sleep(1);
             }
@@ -47,8 +44,8 @@ void Initialize()
             Patching::ApplyPatches();
             while (!Settings::ShouldUninject)
             {
-                Handler::ExternalWork();
-                Handler::OnUpdatePatch(); // for now 
+                Handler::DoKeyBinds();
+                Handler::OnTick(); // for now 
                 Sleep(50);
             }
         }
@@ -69,7 +66,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReser
         case DLL_PROCESS_ATTACH:
             HModule = hModule;
             DisableThreadLibraryCalls(HModule);
-            CreateThread(NULL, NULL, reinterpret_cast<LPTHREAD_START_ROUTINE>(Initialize), NULL, NULL, NULL);
+            CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)Initialize, NULL, NULL, NULL);
             break;
     }
     return TRUE;

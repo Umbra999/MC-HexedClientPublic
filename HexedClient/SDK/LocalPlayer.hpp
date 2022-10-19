@@ -1,12 +1,23 @@
 #pragma once
 #include "JNIHelper.hpp"
+#include "NetHandlerPlayClient.hpp"
 
 class LocalPlayer
 {
-public:
-	jobject LocalPlayerObj;
+private:
+	jobject LocalPlayerObj = NULL;
+	jclass CurrentClass = NULL;
+	NetHandlerPlayClient NetHandlerPlayClientInstance = NULL;
 
-	LocalPlayer(jobject obj);
-	jclass GetClass();
-	void setSprinting(jboolean sprinting);
+	jmethodID setSprintingMethodID = NULL;
+	jmethodID swingItemMethodID = NULL;
+
+public:
+	LocalPlayer(jobject);
+	jobject GetCurrentObject();
+	jclass GetCurrentClass();
+
+	NetHandlerPlayClient getNetHandlerPlayClient();
+	void setSprinting(jboolean);
+	void swingItem();
 };

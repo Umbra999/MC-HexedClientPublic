@@ -15,13 +15,15 @@ bool GUI::Enabled = false;
 
 void GUI::Create()
 {
-	originalWNDPROC = (WNDPROC)SetWindowLongPtrW(Settings::MainWindow, GWLP_WNDPROC, (LONG_PTR)patchedWNDPROC);
+	HWND minecraftWindow = FindWindowA("LWJGL", nullptr);
+
+	originalWNDPROC = (WNDPROC)SetWindowLongPtrW(minecraftWindow, GWLP_WNDPROC, (LONG_PTR)patchedWNDPROC);
 
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.ConfigFlags = ImGuiConfigFlags_NoMouseCursorChange;
 	ImGui::StyleColorsDark();
-	ImGui_ImplWin32_Init(Settings::MainWindow);
+	ImGui_ImplWin32_Init(minecraftWindow);
 	ImGui_ImplOpenGL3_Init();
 
 	auto& style = ImGui::GetStyle();
@@ -86,12 +88,13 @@ void GUI::Create()
 
 void GUI::Delete()
 {
+	HWND minecraftWindow = FindWindowA("LWJGL", nullptr);
     Enabled = false;
     IsInitialized = false;
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplWin32_Shutdown();
     ImGui::DestroyContext();
-	SetWindowLongPtrW(Settings::MainWindow, GWLP_WNDPROC, (LONG_PTR)originalWNDPROC);
+	SetWindowLongPtrW(minecraftWindow, GWLP_WNDPROC, (LONG_PTR)originalWNDPROC);
 }
 
 void GUI::Render()
@@ -110,17 +113,26 @@ void GUI::Render()
 
 	if (ImGui::CollapsingHeader("COMBAT"))
 	{
-		if (ImGui::Checkbox("Click Multiplier", &Settings::LeftClickMultiplier));
-		if (ImGui::Checkbox("LDelay Remover", &Settings::RemoveLClickDelay));
-		if (ImGui::Checkbox("RDelay Remover", &Settings::RemoveRClickDelay));
+		if (ImGui::Checkbox("Autoclicker", &Settings::Autoclicker));
+		if (ImGui::SliderInt("CPS", &Settings::AutoclickerCount, 1, 20));
+		if (ImGui::Checkbox("No Hit Delay", &Settings::NoHitDelay));
+		if (ImGui::Checkbox("No Build Delay", &Settings::NoBuildDelay));
+	}
+
+	if (ImGui::CollapsingHeader("PROTECTION"))
+	{
+		if (ImGui::Checkbox("Anti Bot", &Settings::AntiBot));
+	}
+
+	if (ImGui::CollapsingHeader("VISUAL"))
+	{
+		if (ImGui::Checkbox("Frame Spoof", &Settings::FrameSpoof));
+		if (ImGui::SliderInt("Frames", &Settings::FrameSpoofValue, -1337, 1337));
 	}
 
 	if (ImGui::CollapsingHeader("MISC"))
 	{
-		if (ImGui::Button("Uninject"))
-		{
-			Settings::ShouldUninject = true;
-		}
+		if (ImGui::Button("Uninject")) Settings::ShouldUninject = true;
 	}
 
 	ImGui::End();
@@ -132,7 +144,7 @@ void GUI::Render()
 	ImGui::SetNextWindowBgAlpha(0.25f);
 	bool* p_open = (bool*)0;
 	ImGui::Begin("Info", p_open, window_flags);
-	ImGui::Text("H E X E D");
+	ImGui::Text(("FPS: " + std::to_string(Settings::DebugFPS)).c_str());
 
 	ImGui::End();
 	// INFO WINDOW END
