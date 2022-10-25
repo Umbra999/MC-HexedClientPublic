@@ -4,22 +4,23 @@
 #include "JNIHelper.hpp"
 #include <vector>
 #include "EntityPlayer.hpp"
+#include <string>
 
 class World
 {
 private:
-	jobject WorldObj = NULL;
+	jobject CurrentObject = NULL;
 	jclass CurrentClass = NULL;
 
-	jfieldID playerListFieldID = NULL;
-	jobject playerListObject = NULL;
-	jint playerListSize = NULL;
-	jobjectArray playerList = NULL;
+	jfieldID getPlayerListFieldID = NULL;
+	jobject getPlayerListObject = NULL;
+	jint getPlayerListSizeInt = NULL;
+	jobjectArray getplayerListObjectArray = NULL;
 
-	jfieldID entityListFieldID = NULL;
-	jobject entityListObject = NULL;
-	jint entityListSize = NULL;
-	jobjectArray entityList = NULL;
+	jfieldID getEntityListFieldID = NULL;
+	jobject getEntityListObject = NULL;
+	jint getEntityListSizeInt = NULL;
+	jobjectArray getEntityListObjectArray = NULL;
 
 public:
 	World(jobject obj);
@@ -27,5 +28,5 @@ public:
 	jclass GetCurrentClass();
 
 	std::vector<EntityPlayer> getPlayerList();
-	std::vector<jobject*> getEntityList();
+	std::vector<Entity> getEntityList();
 };

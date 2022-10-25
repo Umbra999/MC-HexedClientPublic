@@ -1,17 +1,33 @@
 #pragma once
 #include "JNIHelper.hpp"
-#include <string>
 
 class Entity
 {
 private:
-	jobject EntityObj = NULL;
+	jobject CurrentObject = NULL;
 	jclass CurrentClass = NULL;
 
-	jmethodID getNameMethodID = NULL;
-	jobject getNameObject = NULL;
-	jstring DisplayName = NULL;
-	jmethodID setNameMethodID = NULL;
+	jmethodID getDisplayNameMethodID = NULL;
+	jobject getDisplayNameObject = NULL;
+	jstring getDisplayNameString = NULL;
+
+	jmethodID setDisplayNameTagMethodID = NULL;
+
+	jfieldID immuneToFireFieldID = NULL;
+	jboolean immuneToFireBool = NULL;
+
+	jfieldID PosXFieldID = NULL;
+	jfieldID PosYFieldID = NULL;
+	jfieldID PosZFieldID = NULL;
+	jdouble PosXDouble = NULL;
+	jdouble PosYDouble = NULL;
+	jdouble PosZDouble = NULL;
+
+	jfieldID BoundingBoxWidthFieldID = NULL;
+	jfieldID BoundingBoxHeightFieldID = NULL;
+
+	jfieldID getEntityIdFieldID = NULL;
+	jint EntityIdInt = NULL;
 
 public:
 	Entity(jobject obj);
@@ -19,5 +35,13 @@ public:
 	jclass GetCurrentClass();
 
 	jstring GetDisplayName();
-	void SetDisplayName(jstring);
+	void SetDisplayNameTag(jstring);
+	jboolean GetImmuneToFire();
+	void SetImmuneToFire(jboolean);
+	jdouble GetPositionX();
+	jdouble GetPositionY();
+	jdouble GetPositionZ();
+	void SetBoundingBoxWidth(jfloat);
+	void SetBoundingBoxHeight(jfloat);
+	jint GetEntityID();
 };

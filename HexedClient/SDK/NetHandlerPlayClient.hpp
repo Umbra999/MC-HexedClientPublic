@@ -4,7 +4,7 @@
 class NetHandlerPlayClient
 {
 private:
-	jobject NetHandlerPlayClientObj = NULL;
+	jobject CurrentObject = NULL;
 	jclass CurrentClass = NULL;
 
 public:

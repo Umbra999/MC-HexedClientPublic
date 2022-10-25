@@ -1,17 +1,33 @@
 #pragma once
 #include "EntityLivingBase.hpp"
+#include "NetworkPlayerInfo.hpp"
+#include "InventoryPlayer.hpp"
+#include "ItemStack.hpp"
 
-class EntityPlayer
+class EntityPlayer : public EntityLivingBase
 {
 private:
-	jobject EntityPlayerObj = NULL;
+	jobject CurrentObject = NULL;
 	jclass CurrentClass = NULL;
-	EntityLivingBase EntityLivingBaseInstance = NULL;
+
+	jmethodID getNetworkPlayerInfoMethodID = NULL;
+	jobject getNetworkPlayerInfoObject = NULL;
+	NetworkPlayerInfo NetworkPlayerInfoInstance = NULL;
+
+	jfieldID getInventoryPlayerFieldID = NULL;
+	jobject getInventoryPlayerObject = NULL;
+	InventoryPlayer InventoryPlayerInstance = NULL;
+
+	jmethodID getCurrentEquipedItemMethodID = NULL;
+	jobject getCurrentEquipedItemObject = NULL;
+	ItemStack CurrentEquipedItemInstance = NULL;
 
 public:
 	EntityPlayer(jobject obj);
 	jobject GetCurrentObject();
 	jclass GetCurrentClass();
 
-	EntityLivingBase GetEntityLivingBase();
+	NetworkPlayerInfo getNetworkPlayerInfo();
+	InventoryPlayer getInventoryPlayer();
+	ItemStack getCurrentEquipedItem();
 };

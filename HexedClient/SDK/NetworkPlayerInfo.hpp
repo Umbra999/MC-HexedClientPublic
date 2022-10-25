@@ -4,11 +4,17 @@
 class NetworkPlayerInfo
 {
 private:
-	jobject NetworkPlayerInfoObj = NULL;
+	jobject CurrentObject = NULL;
 	jclass CurrentClass = NULL;
+
+	jfieldID getPingFieldID = NULL;
+	jint getPingInt = NULL;
 
 public:
 	NetworkPlayerInfo(jobject obj);
 	jobject GetCurrentObject();
 	jclass GetCurrentClass();
+
+	jint GetPing();
+	void SetPing(jint);
 };

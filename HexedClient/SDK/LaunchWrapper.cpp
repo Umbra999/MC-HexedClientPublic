@@ -2,23 +2,32 @@
 #include "JNIHelper.hpp"
 #include "../Wrapper/Logger.hpp"
 
-jclass LaunchWrapper::getMinecraftClass()
-{
-	if (minecraftClass == NULL) minecraftClass = JNIHelper::ForgeFindClass("net.minecraft.client.Minecraft");
-	return minecraftClass;
-}
-
 Minecraft LaunchWrapper::getMinecraft()
 {
-	if (getMinecraftClass() == NULL) return NULL;
-	if (minecraftInstance.GetCurrentClass() == NULL)
+	if (MinecraftInstance.GetCurrentClass() == NULL)
 	{
-		jfieldID findMinecraft = JNIHelper::env->GetStaticFieldID(getMinecraftClass(), "field_71432_P", "Lnet/minecraft/client/Minecraft;");
-		if (findMinecraft == NULL) return NULL;
-		jobject Instance = JNIHelper::env->GetStaticObjectField(getMinecraftClass(), findMinecraft);
-		minecraftInstance = Minecraft(Instance);
+		if (minecraftClass == NULL)
+		{
+			minecraftClass = JNIHelper::ForgeFindClass("net.minecraft.client.Minecraft");
+			if (minecraftClass == NULL) return NULL;
+		}
+
+		if (getMinecraftFieldID == NULL)
+		{
+			getMinecraftFieldID = JNIHelper::env->GetStaticFieldID(minecraftClass, "field_71432_P", "Lnet/minecraft/client/Minecraft;");
+			if (getMinecraftFieldID == NULL) return NULL;
+		}
+
+		if (getMinecraftObject == NULL)
+		{
+			getMinecraftObject = JNIHelper::env->GetStaticObjectField(minecraftClass, getMinecraftFieldID);
+			if (getMinecraftObject == NULL) return NULL;
+		}
+
+		MinecraftInstance = Minecraft(getMinecraftObject);
 	}
-	return minecraftInstance;
+
+	return MinecraftInstance;
 }
 
 bool LaunchWrapper::IsForge()

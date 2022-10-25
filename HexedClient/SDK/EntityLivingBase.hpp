@@ -1,21 +1,19 @@
 #pragma once
 #include "Entity.hpp"
 
-class EntityLivingBase
+class EntityLivingBase : public Entity
 {
 private:
-	jobject EntityLivingBaseObj = NULL;
+	jobject CurrentObject = NULL;
 	jclass CurrentClass = NULL;
 
-	Entity EntityInstance = NULL;
 	jmethodID getHealthMethodID = NULL;
-	jfloat getHealthMethod = NULL;
+	jfloat getHealtFloat = NULL;
 
 public:
 	EntityLivingBase(jobject obj);
 	jobject GetCurrentObject();
 	jclass GetCurrentClass();
 
-	Entity GetEntity();
 	float GetHealth();
 };

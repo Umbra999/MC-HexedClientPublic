@@ -1,26 +1,44 @@
 #pragma once
 #include "LocalPlayer.hpp"
-#include "World.hpp"
+#include "WorldClient.hpp"
 #include "NetworkManager.hpp"
+#include "ServerData.hpp"
 
 class Minecraft
 {
 private:
-	jobject MinecraftObj = NULL;
+	jobject CurrentObject = NULL;
 	jclass CurrentClass = NULL;
+
+	jfieldID getLocalPlayerFieldID = NULL;
+	jobject getLocalPlayerObject = NULL;
 	LocalPlayer LocalPlayerInstance = NULL;
-	World WorldInstance = NULL;
+
+	jfieldID getWorldFieldID = NULL;
+	jobject getWorldObject = NULL;
+	WorldClient WorldInstance = NULL;
+
+	jfieldID getNetworkManagerFieldID = NULL;
+	jobject getNetworkManagerObject = NULL;
 	NetworkManager NetworkManagerInstance = NULL;
 
-	jfieldID leftClickFieldID = NULL;
-	jfieldID rightClickFieldID = NULL;
-	jmethodID leftClickMethodID = NULL;
-	jmethodID rightClickMethodID = NULL;
-	jfieldID gameHasFocusFieldID = NULL;
-	jfieldID fpsCounterFieldID = NULL;
+	jfieldID getServerDataFieldID = NULL;
+	jobject getServerDataObject = NULL;
+	ServerData ServerDataInstance = NULL;
 
-	jboolean hasIngameFocus = NULL;
-	jint fpsCounter = NULL;
+	jfieldID leftClickFieldID = NULL;
+
+	jfieldID rightClickFieldID = NULL;
+
+	jmethodID leftClickMethodID = NULL;
+
+	jmethodID rightClickMethodID = NULL;
+	
+	jfieldID fpsCounterFieldID = NULL;
+	jint getfpsCounterInt = NULL;
+
+	jfieldID gameHasFocusFieldID = NULL;
+	jboolean hasIngameFocusBool = NULL;
 
 public:
 	Minecraft(jobject);
@@ -28,8 +46,9 @@ public:
 	jclass GetCurrentClass();
 
 	LocalPlayer getLocalPlayer();
-	World getWorld();
+	WorldClient getWorld();
 	NetworkManager getNetworkManager();
+	ServerData getServerData();
 	void SetLeftClickDelay(int);
 	void SetRightClickDelay(int);
 	void LeftClick();

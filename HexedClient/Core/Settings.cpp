@@ -3,6 +3,8 @@
 //GENERAL
 bool Settings::ShouldUninject = false;
 int Settings::DebugFPS = 0;
+int Settings::DebugPing = 0;
+bool Settings::CanRenderMenu = false;
 
 //MOVEMENT
 bool Settings::AutoSprint = false;
@@ -12,10 +14,24 @@ bool Settings::NoHitDelay = false;
 bool Settings::NoBuildDelay = false;
 bool Settings::Autoclicker = false;
 int Settings::AutoclickerCount = 16;
+bool Settings::HitBoxExtender = false;
+float Settings::HitBoxWidth = 0.4f;
+float Settings::HitBoxHeight = 0.2f;
 
 //PROTECTION
 bool Settings::AntiBot = false;
+bool Settings::AntiBotNameFlag = false;
+bool Settings::AntiBotPingFlag = false;
+bool Settings::AntiBotRiskyPingFlag = false;
+bool Settings::AntiBotUUIDFlag = false;
 
 //Visual
 bool Settings::FrameSpoof = false;
 int Settings::FrameSpoofValue = 999;
+bool Settings::PingSpoof;
+int Settings::PingSpoofValue = 999;
+bool Settings::NoFire = false;
+bool Settings::PlayerESP = false;
+
+//HYPIXEL
+bool Settings::MurderExpose = false;

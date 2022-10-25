@@ -3,9 +3,9 @@
 class Handler
 {
 private:
-	static int CurrentTick;
+	static void DoKeyBinds();
+	static void SetSettings();
 
 public:
 	static void OnTick();
-	static void DoKeyBinds();
 };

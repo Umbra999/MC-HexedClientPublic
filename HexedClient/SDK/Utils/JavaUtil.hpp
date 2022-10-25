@@ -13,10 +13,6 @@ private:
 	static jclass GetArrayListClass();
 	static jclass GetListClass();
 
-	static jfieldID GetArrayListElementDataField();
-	static jfieldID GetArrayListSizeField();
-	static jfieldID GetStringValueField();
-
 public:
 	static jint GetArraySize(jobject);
 	static jobjectArray GetArray(jobject);

@@ -44,7 +44,6 @@ void Initialize()
             Patching::ApplyPatches();
             while (!Settings::ShouldUninject)
             {
-                Handler::DoKeyBinds();
                 Handler::OnTick(); // for now 
                 Sleep(50);
             }

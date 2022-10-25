@@ -2,22 +2,38 @@
 
 jclass JNIHelper::ForgeFindClass(const char* name)
 {
-	if (classloader_obj == NULL || findclass_md == NULL)
+	if (LaunchWrapperClassLoaderClass == NULL)
 	{
-		jclass launchwrapper_cls = JNIHelper::env->FindClass("net/minecraft/launchwrapper/LaunchClassLoader");
-		jclass launch_cls = JNIHelper::env->FindClass("net/minecraft/launchwrapper/Launch");
+		LaunchWrapperClassLoaderClass = JNIHelper::env->FindClass("net/minecraft/launchwrapper/LaunchClassLoader");
+		if (LaunchWrapperClassLoaderClass == NULL) return NULL;
+	}
 
-		auto classloader_fid = JNIHelper::env->GetStaticFieldID(launch_cls, "classLoader", "Lnet/minecraft/launchwrapper/LaunchClassLoader;");
+	if (FindClassMethodID == NULL)
+	{
+		FindClassMethodID = JNIHelper::env->GetMethodID(LaunchWrapperClassLoaderClass, "findClass", "(Ljava/lang/String;)Ljava/lang/Class;");
+		if (FindClassMethodID == NULL) return NULL;
+	}
 
-		findclass_md = JNIHelper::env->GetMethodID(launchwrapper_cls, "findClass", "(Ljava/lang/String;)Ljava/lang/Class;");
-		classloader_obj = JNIHelper::env->GetStaticObjectField(launch_cls, classloader_fid);
+	if (LaunchClass == NULL)
+	{
+		LaunchClass = JNIHelper::env->FindClass("net/minecraft/launchwrapper/Launch");
+		if (LaunchClass == NULL) return NULL;
+	}
+	
+	if (ClassLoaderFieldID == NULL)
+	{
+		ClassLoaderFieldID = JNIHelper::env->GetStaticFieldID(LaunchClass, "classLoader", "Lnet/minecraft/launchwrapper/LaunchClassLoader;");
+		if (ClassLoaderFieldID == NULL) return NULL;
+	}
 
-		JNIHelper::env->DeleteLocalRef(launchwrapper_cls);
-		JNIHelper::env->DeleteLocalRef(launch_cls);
+	if (ClassLoaderObject == NULL)
+	{
+		ClassLoaderObject = JNIHelper::env->GetStaticObjectField(LaunchClass, ClassLoaderFieldID);
+		if (ClassLoaderObject == NULL) return NULL;
 	}
 
 	jstring jname = JNIHelper::env->NewStringUTF(name);
-	jclass cls = (jclass)JNIHelper::env->CallObjectMethod(classloader_obj, findclass_md, jname);
+	jclass cls = (jclass)JNIHelper::env->CallObjectMethod(ClassLoaderObject, FindClassMethodID, jname);
 
 	JNIHelper::env->DeleteLocalRef(jname);
 

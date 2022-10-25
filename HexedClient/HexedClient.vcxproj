@@ -152,6 +152,17 @@
   <ItemGroup>
     <ClInclude Include="Core\GUI.hpp" />
     <ClInclude Include="Core\Handler.hpp" />
+    <ClInclude Include="Core\Modules\AntiBot.hpp" />
+    <ClInclude Include="Core\Modules\Autoclicker.hpp" />
+    <ClInclude Include="Core\Modules\AutoSprint.hpp" />
+    <ClInclude Include="Core\Modules\FrameSpoof.hpp" />
+    <ClInclude Include="Core\Modules\HitBoxExtender.hpp" />
+    <ClInclude Include="Core\Modules\MurderExpose.hpp" />
+    <ClInclude Include="Core\Modules\NoBuildDelay.hpp" />
+    <ClInclude Include="Core\Modules\NoFire.hpp" />
+    <ClInclude Include="Core\Modules\NoHitDelay.hpp" />
+    <ClInclude Include="Core\Modules\PingSpoof.hpp" />
+    <ClInclude Include="Core\Modules\PlayerESP.hpp" />
     <ClInclude Include="Core\Patching.hpp" />
     <ClInclude Include="Core\Settings.hpp" />
     <ClInclude Include="framework.h" />
@@ -177,6 +188,9 @@
     <ClInclude Include="minhook\trampoline.h" />
     <ClInclude Include="SDK\Entity.hpp" />
     <ClInclude Include="SDK\EntityLivingBase.hpp" />
+    <ClInclude Include="SDK\InventoryPlayer.hpp" />
+    <ClInclude Include="SDK\Item.hpp" />
+    <ClInclude Include="SDK\ItemStack.hpp" />
     <ClInclude Include="SDK\JNIHelper.hpp" />
     <ClInclude Include="SDK\LaunchWrapper.hpp" />
     <ClInclude Include="SDK\LocalPlayer.hpp" />
@@ -185,14 +199,29 @@
     <ClInclude Include="SDK\NetHandlerPlayClient.hpp" />
     <ClInclude Include="SDK\NetworkManager.hpp" />
     <ClInclude Include="SDK\NetworkPlayerInfo.hpp" />
+    <ClInclude Include="SDK\ServerData.hpp" />
     <ClInclude Include="SDK\Utils\JavaUtil.hpp" />
+    <ClInclude Include="SDK\Utils\MCHelper.hpp" />
     <ClInclude Include="SDK\World.hpp" />
+    <ClInclude Include="SDK\WorldClient.hpp" />
+    <ClInclude Include="Wrapper\ClientConsole.hpp" />
     <ClInclude Include="Wrapper\Logger.hpp" />
     <ClInclude Include="Wrapper\Utils.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\GUI.cpp" />
     <ClCompile Include="Core\Handler.cpp" />
+    <ClCompile Include="Core\Modules\AntiBot.cpp" />
+    <ClCompile Include="Core\Modules\Autoclicker.cpp" />
+    <ClCompile Include="Core\Modules\AutoSprint.cpp" />
+    <ClCompile Include="Core\Modules\FrameSpoof.cpp" />
+    <ClCompile Include="Core\Modules\HitBoxExtender.cpp" />
+    <ClCompile Include="Core\Modules\MurderExpose.cpp" />
+    <ClCompile Include="Core\Modules\NoBuildDelay.cpp" />
+    <ClCompile Include="Core\Modules\NoFire.cpp" />
+    <ClCompile Include="Core\Modules\NoHitDelay.cpp" />
+    <ClCompile Include="Core\Modules\PingSpoof.cpp" />
+    <ClCompile Include="Core\Modules\PlayerESP.cpp" />
     <ClCompile Include="Core\Patching.cpp" />
     <ClCompile Include="Core\Settings.cpp" />
     <ClCompile Include="dllmain.cpp" />
@@ -209,6 +238,9 @@
     <ClCompile Include="minhook\trampoline.c" />
     <ClCompile Include="SDK\Entity.cpp" />
     <ClCompile Include="SDK\EntityLivingBase.cpp" />
+    <ClCompile Include="SDK\InventoryPlayer.cpp" />
+    <ClCompile Include="SDK\Item.cpp" />
+    <ClCompile Include="SDK\ItemStack.cpp" />
     <ClCompile Include="SDK\JNIHelper.cpp" />
     <ClCompile Include="SDK\LaunchWrapper.cpp" />
     <ClCompile Include="SDK\LocalPlayer.cpp" />
@@ -217,8 +249,12 @@
     <ClCompile Include="SDK\NetHandlerPlayClient.cpp" />
     <ClCompile Include="SDK\NetworkManager.cpp" />
     <ClCompile Include="SDK\NetworkPlayerInfo.cpp" />
+    <ClCompile Include="SDK\ServerData.cpp" />
     <ClCompile Include="SDK\Utils\JavaUtil.cpp" />
+    <ClCompile Include="SDK\Utils\MCHelper.cpp" />
     <ClCompile Include="SDK\World.cpp" />
+    <ClCompile Include="SDK\WorldClient.cpp" />
+    <ClCompile Include="Wrapper\ClientConsole.cpp" />
     <ClCompile Include="Wrapper\Logger.cpp" />
     <ClCompile Include="Wrapper\Utils.cpp" />
   </ItemGroup>

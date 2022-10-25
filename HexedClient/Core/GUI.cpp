@@ -5,6 +5,8 @@
 #include "../ImGui/imgui_impl_opengl3.h"
 #include <gl/GL.h>
 #include "Settings.hpp"
+#include <vector>
+#include "../Wrapper/ClientConsole.hpp"
 
 #pragma comment(lib, "opengl32.lib")
 
@@ -114,20 +116,48 @@ void GUI::Render()
 	if (ImGui::CollapsingHeader("COMBAT"))
 	{
 		if (ImGui::Checkbox("Autoclicker", &Settings::Autoclicker));
-		if (ImGui::SliderInt("CPS", &Settings::AutoclickerCount, 1, 20));
+		if (Settings::Autoclicker) if (ImGui::SliderInt("CPS", &Settings::AutoclickerCount, 1, 20));
+
 		if (ImGui::Checkbox("No Hit Delay", &Settings::NoHitDelay));
+
 		if (ImGui::Checkbox("No Build Delay", &Settings::NoBuildDelay));
+
+		if (ImGui::Checkbox("Hitbox Extender", &Settings::HitBoxExtender));
+		if (Settings::HitBoxExtender)
+		{
+			if (ImGui::SliderFloat("Width", &Settings::HitBoxWidth, 0, 3));
+			if (ImGui::SliderFloat("Height", &Settings::HitBoxHeight, 0, 3));
+		}
 	}
 
 	if (ImGui::CollapsingHeader("PROTECTION"))
 	{
 		if (ImGui::Checkbox("Anti Bot", &Settings::AntiBot));
+		if (Settings::AntiBot)
+		{
+			if (ImGui::Checkbox("Name Flag", &Settings::AntiBotNameFlag));
+			if (ImGui::Checkbox("Ping Flag", &Settings::AntiBotPingFlag));
+			if (ImGui::Checkbox("Risky Ping Flag", &Settings::AntiBotRiskyPingFlag));
+			if (ImGui::Checkbox("UUID Flag", &Settings::AntiBotUUIDFlag));
+		}
 	}
 
 	if (ImGui::CollapsingHeader("VISUAL"))
 	{
 		if (ImGui::Checkbox("Frame Spoof", &Settings::FrameSpoof));
-		if (ImGui::SliderInt("Frames", &Settings::FrameSpoofValue, -1337, 1337));
+		if (Settings::FrameSpoof) if (ImGui::SliderInt("Frames", &Settings::FrameSpoofValue, -1337, 1337));
+
+		if (ImGui::Checkbox("Ping Spoof", &Settings::PingSpoof));
+		if (Settings::PingSpoof) if (ImGui::SliderInt("Latency", &Settings::PingSpoofValue, -1337, 1337));
+
+		if (ImGui::Checkbox("No Fire", &Settings::NoFire));
+
+		if (ImGui::Checkbox("Player ESP", &Settings::PlayerESP));
+	}
+
+	if (ImGui::CollapsingHeader("HYPIXEL"))
+	{
+		if (ImGui::Checkbox("Murder Expose", &Settings::MurderExpose));
 	}
 
 	if (ImGui::CollapsingHeader("MISC"))
@@ -142,12 +172,35 @@ void GUI::Render()
 	ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
 	ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_FirstUseEver);
 	ImGui::SetNextWindowBgAlpha(0.25f);
-	bool* p_open = (bool*)0;
-	ImGui::Begin("Info", p_open, window_flags);
-	ImGui::Text(("FPS: " + std::to_string(Settings::DebugFPS)).c_str());
+	bool* info_open = (bool*)0;
+	ImGui::Begin("Info", info_open, window_flags);
+	ImGui::Text(("FPS: " + std::to_string(Settings::DebugFPS) + " Ping: " + std::to_string(Settings::DebugPing)).c_str());
 
 	ImGui::End();
 	// INFO WINDOW END
+
+	// CONSOLE WINDOW START
+	ImGui::SetNextWindowSize(ImVec2(400, 300));
+	ImGui::SetNextWindowBgAlpha(0.25f);
+	bool* debug_open = (bool*)0;
+	if (ImGui::Begin("Debug", debug_open, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav))
+	{
+		ImGui::PushItemWidth(-FLT_MIN);
+		ImGui::BeginChild("scrollable", ImVec2(-FLT_MIN, FLT_MIN), false, ImGuiWindowFlags_AlwaysVerticalScrollbar);
+
+		std::vector<std::string> logs = ClientConsole::GetLogs();
+
+		int size = logs.size();
+		for (int i = size - 1; i >= 0; i--)
+		{
+			ImGui::TextWrapped(logs[i].c_str());
+		}
+
+		ImGui::EndChild();
+	}
+
+	ImGui::End();
+	// CONSOLE WINDOW END
 
 	ImGui::EndFrame();
 	ImGui::Render();
@@ -170,7 +223,7 @@ void GUI::OnSwapBuffers(HDC hdc)
 
         Create();
     }
-	else if (Enabled) Render();
+	else if (Enabled && Settings::CanRenderMenu) Render();
 }
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);

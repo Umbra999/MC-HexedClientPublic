@@ -1,28 +1,91 @@
 #include "EntityPlayer.hpp"
-#include "../Wrapper/Logger.hpp"
 
-EntityPlayer::EntityPlayer(jobject obj)
+EntityPlayer::EntityPlayer(jobject obj) : EntityLivingBase(obj)
 {
-	EntityPlayerObj = obj;
+	CurrentObject = obj;
 }
 
 jobject EntityPlayer::GetCurrentObject()
 {
-	return EntityPlayerObj;
+	return CurrentObject;
 }
 
 jclass EntityPlayer::GetCurrentClass()
 {
-	if (EntityPlayerObj == NULL) return NULL;
-	if (CurrentClass == NULL) CurrentClass = JNIHelper::env->GetObjectClass(EntityPlayerObj);
+	if (CurrentObject == NULL) return NULL;
+	if (CurrentClass == NULL) CurrentClass = JNIHelper::env->GetObjectClass(CurrentObject);
 
 	return CurrentClass;
 }
 
-EntityLivingBase EntityPlayer::GetEntityLivingBase()
+NetworkPlayerInfo EntityPlayer::getNetworkPlayerInfo()
 {
 	if (GetCurrentClass() == NULL) return NULL;
-	if (EntityLivingBaseInstance.GetCurrentClass() == NULL) EntityLivingBaseInstance = EntityLivingBase(EntityPlayerObj);
 
-	return EntityLivingBaseInstance;
+	if (NetworkPlayerInfoInstance.GetCurrentClass() == NULL)
+	{
+		if (getNetworkPlayerInfoMethodID == NULL)
+		{
+			getNetworkPlayerInfoMethodID = JNIHelper::env->GetMethodID(GetCurrentClass(), "func_175155_b", "()Lnet/minecraft/client/network/NetworkPlayerInfo;");
+			if (getNetworkPlayerInfoMethodID == NULL) return NULL;
+		}
+
+		if (getNetworkPlayerInfoObject == NULL)
+		{
+			getNetworkPlayerInfoObject = JNIHelper::env->CallObjectMethod(GetCurrentObject(), getNetworkPlayerInfoMethodID);
+			if (getNetworkPlayerInfoObject == NULL) return NULL;
+		}
+		
+		NetworkPlayerInfoInstance = NetworkPlayerInfo(getNetworkPlayerInfoObject);
+	}
+
+	return NetworkPlayerInfoInstance;
+}
+
+InventoryPlayer EntityPlayer::getInventoryPlayer()
+{
+	if (GetCurrentClass() == NULL) return NULL;
+
+	if (InventoryPlayerInstance.GetCurrentClass() == NULL)
+	{
+		if (getInventoryPlayerFieldID == NULL)
+		{
+			getInventoryPlayerFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71071_by", "Lnet/minecraft/entity/player/InventoryPlayer;");
+			if (getInventoryPlayerFieldID == NULL) return NULL;
+		}
+
+		if (getInventoryPlayerObject == NULL)
+		{
+			getInventoryPlayerObject = JNIHelper::env->GetObjectField(GetCurrentObject(), getInventoryPlayerFieldID);
+			if (getInventoryPlayerObject == NULL) return NULL;
+		}
+
+		InventoryPlayerInstance = InventoryPlayer(getInventoryPlayerObject);
+	}
+
+	return InventoryPlayerInstance;
+}
+
+ItemStack EntityPlayer::getCurrentEquipedItem()
+{
+	if (GetCurrentClass() == NULL) return NULL;
+
+	if (CurrentEquipedItemInstance.GetCurrentClass() == NULL)
+	{
+		if (getCurrentEquipedItemMethodID == NULL)
+		{
+			getCurrentEquipedItemMethodID = JNIHelper::env->GetMethodID(GetCurrentClass(), "func_71045_bC", "()Lnet/minecraft/item/ItemStack;");
+			if (getCurrentEquipedItemMethodID == NULL) return NULL;
+		}
+
+		if (getCurrentEquipedItemObject == NULL)
+		{
+			getCurrentEquipedItemObject = JNIHelper::env->CallObjectMethod(GetCurrentObject(), getCurrentEquipedItemMethodID);
+			if (getCurrentEquipedItemObject == NULL) return NULL;
+		}
+
+		CurrentEquipedItemInstance = ItemStack(getCurrentEquipedItemObject);
+	}
+
+	return CurrentEquipedItemInstance;
 }

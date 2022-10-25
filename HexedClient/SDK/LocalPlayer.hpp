@@ -1,12 +1,16 @@
 #pragma once
 #include "JNIHelper.hpp"
 #include "NetHandlerPlayClient.hpp"
+#include "EntityPlayer.hpp"
 
-class LocalPlayer
+class LocalPlayer : public EntityPlayer
 {
 private:
-	jobject LocalPlayerObj = NULL;
+	jobject CurrentObject = NULL;
 	jclass CurrentClass = NULL;
+
+	jfieldID getNetHandlerPlayClientFieldID = NULL;
+	jobject getNetHandlerPlayClientObject = NULL;
 	NetHandlerPlayClient NetHandlerPlayClientInstance = NULL;
 
 	jmethodID setSprintingMethodID = NULL;

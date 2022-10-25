@@ -4,18 +4,18 @@
 
 World::World(jobject obj)
 {
-	WorldObj = obj;
+	CurrentObject = obj;
 }
 
 jobject World::GetCurrentObject()
 {
-	return WorldObj;
+	return CurrentObject;
 }
 
 jclass World::GetCurrentClass()
 {
-	if (WorldObj == NULL) return NULL;
-	if (CurrentClass == NULL) CurrentClass = JNIHelper::env->GetObjectClass(WorldObj);
+	if (CurrentObject == NULL) return NULL;
+	if (CurrentClass == NULL) CurrentClass = JNIHelper::env->GetObjectClass(CurrentObject);
 
 	return CurrentClass;
 }
@@ -26,73 +26,73 @@ std::vector<EntityPlayer> World::getPlayerList()
 
 	if (GetCurrentClass() == NULL) return cachedPlayers;
 
-	if (playerListFieldID == NULL)
+	if (getPlayerListFieldID == NULL)
 	{
-		playerListFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_73010_i", "Ljava/util/List;");
-		if (playerListFieldID == NULL) return cachedPlayers;
+		getPlayerListFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_73010_i", "Ljava/util/List;");
+		if (getPlayerListFieldID == NULL) return cachedPlayers;
 	}
 
-	if (playerListObject == NULL)
+	if (getPlayerListObject == NULL)
 	{
-		playerListObject = JNIHelper::env->GetObjectField(WorldObj, playerListFieldID);
-		if (playerListObject == NULL)return cachedPlayers;
+		getPlayerListObject = JNIHelper::env->GetObjectField(GetCurrentObject(), getPlayerListFieldID);
+		if (getPlayerListObject == NULL) return cachedPlayers;
 	}
 
-	if (playerListSize == NULL)
+	if (getPlayerListSizeInt == NULL)
 	{
-		playerListSize = JavaUtil::GetArraySize(playerListObject);
-		if (playerListSize == NULL) return cachedPlayers;
+		getPlayerListSizeInt = JavaUtil::GetArraySize(getPlayerListObject);
+		if (getPlayerListSizeInt == NULL) return cachedPlayers;
 	}
 
-	if (playerList == NULL)
+	if (getplayerListObjectArray == NULL)
 	{
-		playerList = JavaUtil::GetArray(playerListObject);
-		if (playerList == NULL) return cachedPlayers;
+		getplayerListObjectArray = JavaUtil::GetArray(getPlayerListObject);
+		if (getplayerListObjectArray == NULL) return cachedPlayers;
 	}
 
-	for (int idx = 0; idx < playerListSize; idx++)
+	for (int idx = 0; idx < getPlayerListSizeInt; idx++)
 	{
-		jobject entity = JNIHelper::env->GetObjectArrayElement(playerList, idx);
+		jobject entity = JNIHelper::env->GetObjectArrayElement(getplayerListObjectArray, idx);
 		if (entity != NULL) cachedPlayers.push_back(EntityPlayer(entity));
 	}
 
 	return cachedPlayers;
 }
 
-std::vector<jobject*> World::getEntityList()
+std::vector<Entity> World::getEntityList()
 {
-	std::vector<jobject*> result;
+	std::vector<Entity> result;
 
 	if (GetCurrentClass() == NULL) return result;
 
-	if (entityListFieldID == NULL)
+	if (getEntityListFieldID == NULL)
 	{
-		entityListFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_72996_f", "Ljava/util/List;");
-		if (entityListFieldID == NULL) return result;
+		getEntityListFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_72996_f", "Ljava/util/List;");
+		if (getEntityListFieldID == NULL) return result;
 	}
 
-	if (entityListObject == NULL)
+	if (getEntityListObject == NULL)
 	{
-		entityListObject = JNIHelper::env->GetObjectField(WorldObj, entityListFieldID);
-		if (entityListObject == NULL)return result;
+		getEntityListObject = JNIHelper::env->GetObjectField(GetCurrentObject(), getEntityListFieldID);
+		if (getEntityListObject == NULL) return result;
 	}
 
-	if (entityListSize == NULL)
+	if (getEntityListSizeInt == NULL)
 	{
-		entityListSize = JavaUtil::GetArraySize(entityListObject);
-		if (entityListSize == NULL) return result;
+		getEntityListSizeInt = JavaUtil::GetArraySize(getEntityListObject);
+		if (getEntityListSizeInt == NULL) return result;
 	}
 
-	if (entityList == NULL)
+	if (getEntityListObjectArray == NULL)
 	{
-		entityList = JavaUtil::GetArray(entityListObject);
-		if (entityList == NULL) return result;
+		getEntityListObjectArray = JavaUtil::GetArray(getEntityListObject);
+		if (getEntityListObjectArray == NULL) return result;
 	}
 
-	for (int idx = 0; idx < entityListSize; idx++)
+	for (int idx = 0; idx < getEntityListSizeInt; idx++)
 	{
-		jobject entity = JNIHelper::env->GetObjectArrayElement(entityList, idx);
-		if (entity != NULL) result.push_back(&entity);
+		jobject entity = JNIHelper::env->GetObjectArrayElement(getEntityListObjectArray, idx);
+		if (entity != NULL) result.push_back(Entity(entity));
 	}
 
 	return result;

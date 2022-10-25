@@ -2,18 +2,18 @@
 
 Minecraft::Minecraft(jobject obj)
 {
-	MinecraftObj = obj;
+	CurrentObject = obj;
 }
 
 jobject Minecraft::GetCurrentObject()
 {
-	return MinecraftObj;
+	return CurrentObject;
 }
 
 jclass Minecraft::GetCurrentClass()
 {
-	if (MinecraftObj == NULL) return NULL;
-	if (CurrentClass == NULL) CurrentClass = JNIHelper::env->GetObjectClass(MinecraftObj);
+	if (CurrentObject == NULL) return NULL;
+	if (CurrentClass == NULL) CurrentClass = JNIHelper::env->GetObjectClass(CurrentObject);
 
 	return CurrentClass;
 }
@@ -21,26 +21,46 @@ jclass Minecraft::GetCurrentClass()
 LocalPlayer Minecraft::getLocalPlayer()
 {
 	if (GetCurrentClass() == NULL) return NULL;
+
 	if (LocalPlayerInstance.GetCurrentClass() == NULL)
 	{
-		jfieldID getLocalPlayer = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71439_g", "Lnet/minecraft/client/entity/EntityPlayerSP;");
-		if (getLocalPlayer == NULL) return NULL;
-		jobject Instance = JNIHelper::env->GetObjectField(MinecraftObj, getLocalPlayer);
-		LocalPlayerInstance = LocalPlayer(Instance);
+		if (getLocalPlayerFieldID == NULL)
+		{
+			getLocalPlayerFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71439_g", "Lnet/minecraft/client/entity/EntityPlayerSP;");
+			if (getLocalPlayerFieldID == NULL) return NULL;
+		}
+
+		if (getLocalPlayerObject == NULL)
+		{
+			getLocalPlayerObject = JNIHelper::env->GetObjectField(GetCurrentObject(), getLocalPlayerFieldID);
+			if (getLocalPlayerObject == NULL) return NULL;
+		}
+
+		LocalPlayerInstance = LocalPlayer(getLocalPlayerObject);
 	}
 
 	return LocalPlayerInstance;
 }
 
-World Minecraft::getWorld()
+WorldClient Minecraft::getWorld()
 {
 	if (GetCurrentClass() == NULL) return NULL;
+
 	if (WorldInstance.GetCurrentClass() == NULL)
 	{
-		jfieldID getWorld = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71441_e", "Lnet/minecraft/client/multiplayer/WorldClient;");
-		if (getWorld == NULL) return NULL;
-		jobject Instance = JNIHelper::env->GetObjectField(MinecraftObj, getWorld);
-		WorldInstance = World(Instance);
+		if (getWorldFieldID == NULL)
+		{
+			getWorldFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71441_e", "Lnet/minecraft/client/multiplayer/WorldClient;");
+			if (getWorldFieldID == NULL) return NULL;
+		}
+		
+		if (getWorldObject == NULL)
+		{
+			getWorldObject = JNIHelper::env->GetObjectField(GetCurrentObject(), getWorldFieldID);
+			if (getWorldObject == NULL) return NULL;
+		}
+
+		WorldInstance = WorldClient(getWorldObject);
 	}
 
 	return WorldInstance;
@@ -49,96 +69,143 @@ World Minecraft::getWorld()
 NetworkManager Minecraft::getNetworkManager()
 {
 	if (GetCurrentClass() == NULL) return NULL;
+
 	if (NetworkManagerInstance.GetCurrentClass() == NULL)
 	{
-		jfieldID getNetworkManager = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71453_ak", "Lnet/minecraft/client/network/NetworkManager;");
-		if (getNetworkManager == NULL) return NULL;
-		jobject Instance = JNIHelper::env->GetObjectField(MinecraftObj, getNetworkManager);
-		NetworkManagerInstance = NetworkManager(Instance);
+		if (getNetworkManagerFieldID == NULL)
+		{
+			getNetworkManagerFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71453_ak", "Lnet/minecraft/client/network/NetworkManager;");
+			if (getNetworkManagerFieldID == NULL) return NULL;
+		}
+
+		if (getNetworkManagerObject == NULL)
+		{
+			getNetworkManagerObject = JNIHelper::env->GetObjectField(GetCurrentObject(), getNetworkManagerFieldID);
+			if (getNetworkManagerObject == NULL) return NULL;
+		}
+
+		NetworkManagerInstance = NetworkManager(getNetworkManagerObject);
 	}
 
 	return NetworkManagerInstance;
 }
 
+ServerData Minecraft::getServerData()
+{
+	if (GetCurrentClass() == NULL) return NULL;
+
+	if (ServerDataInstance.GetCurrentClass() == NULL)
+	{
+		if (getServerDataFieldID == NULL)
+		{
+			getServerDataFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71422_O", "Lnet/minecraft/client/multiplayer/ServerData;");
+			if (getServerDataFieldID == NULL) return NULL;
+		}
+
+		if (getServerDataObject == NULL)
+		{
+			getServerDataObject = JNIHelper::env->GetObjectField(GetCurrentObject(), getServerDataFieldID);
+			if (getServerDataObject == NULL) return NULL;
+		}
+
+		ServerDataInstance = ServerData(getServerDataObject);
+	}
+
+	return ServerDataInstance;
+}
+
 void Minecraft::SetLeftClickDelay(int count)
 {
 	if (GetCurrentClass() == NULL) return;
+
 	if (leftClickFieldID == NULL)
 	{
 		leftClickFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71429_W", "I");
 		if (leftClickFieldID == NULL) return;
 	}
 
-	JNIHelper::env->SetIntField(MinecraftObj, leftClickFieldID, count);
+	JNIHelper::env->SetIntField(GetCurrentObject(), leftClickFieldID, count);
 }
 
 void Minecraft::SetRightClickDelay(int count)
 {
 	if (GetCurrentClass() == NULL) return;
+
 	if (rightClickFieldID == NULL)
-	{	
+	{
 		rightClickFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71467_ac", "I");
 		if (rightClickFieldID == NULL) return;
 	}
 
-	JNIHelper::env->SetIntField(MinecraftObj, rightClickFieldID, count);
+	JNIHelper::env->SetIntField(GetCurrentObject(), rightClickFieldID, count);
 }
 
 void Minecraft::LeftClick()
 {
 	if (GetCurrentClass() == NULL) return;
+
 	if (leftClickMethodID == NULL)
 	{
 		leftClickMethodID = JNIHelper::env->GetMethodID(GetCurrentClass(), "func_147116_af", "()V");
 		if (leftClickMethodID == NULL) return;
 	}
 
-	JNIHelper::env->CallVoidMethod(MinecraftObj, leftClickMethodID);
+	JNIHelper::env->CallVoidMethod(GetCurrentObject(), leftClickMethodID);
 }
 
 void Minecraft::RightClick()
 {
 	if (GetCurrentClass() == NULL) return;
+
 	if (rightClickMethodID == NULL)
 	{
 		rightClickMethodID = JNIHelper::env->GetMethodID(GetCurrentClass(), "func_147121_ag", "()V");
 		if (rightClickMethodID == NULL) return;
 	}
 
-	JNIHelper::env->CallVoidMethod(MinecraftObj, rightClickMethodID);
+	JNIHelper::env->CallVoidMethod(GetCurrentObject(), rightClickMethodID);
 }
 
 bool Minecraft::InGameHasFocus()
 {
 	if (GetCurrentClass() == NULL) return NULL;
-	if (gameHasFocusFieldID == NULL)
+
+	if (hasIngameFocusBool == NULL)
 	{
-		gameHasFocusFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71415_G", "Z");
-		if (gameHasFocusFieldID == NULL) return NULL;
+		if (gameHasFocusFieldID == NULL)
+		{
+			gameHasFocusFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71415_G", "Z");
+			if (gameHasFocusFieldID == NULL) return NULL;
+		}
+
+		hasIngameFocusBool = JNIHelper::env->GetBooleanField(GetCurrentObject(), gameHasFocusFieldID);
 	}
 
-	if (hasIngameFocus == NULL) hasIngameFocus = JNIHelper::env->GetBooleanField(MinecraftObj, gameHasFocusFieldID);
-
-	return hasIngameFocus;
+	return hasIngameFocusBool;
 }
 
 int Minecraft::GetFPS()
 {
 	if (GetCurrentClass() == NULL) return NULL;
-	if (fpsCounterFieldID == NULL)
+
+	if (getfpsCounterInt == NULL)
 	{
-		fpsCounterFieldID = JNIHelper::env->GetStaticFieldID(GetCurrentClass(), "field_71470_ab", "I");
-		if (fpsCounterFieldID == NULL) return NULL;
+		if (fpsCounterFieldID == NULL)
+		{
+			fpsCounterFieldID = JNIHelper::env->GetStaticFieldID(GetCurrentClass(), "field_71470_ab", "I");
+			if (fpsCounterFieldID == NULL) return NULL;
+		}
+
+		getfpsCounterInt = JNIHelper::env->GetStaticIntField(GetCurrentClass(), fpsCounterFieldID);
 	}
 
-	if (fpsCounter == NULL) fpsCounter = JNIHelper::env->GetStaticIntField(GetCurrentClass(), fpsCounterFieldID);
-
-	return fpsCounter;
+	return getfpsCounterInt;
 }
 
 void Minecraft::SetFPS(jint FPS)
 {
 	if (GetCurrentClass() == NULL) return;
+
 	if (fpsCounterFieldID == NULL)
 	{
 		fpsCounterFieldID = JNIHelper::env->GetStaticFieldID(GetCurrentClass(), "field_71470_ab", "I");

@@ -2,18 +2,18 @@
 
 NetworkManager::NetworkManager(jobject obj)
 {
-	NetworkManagerObj = obj;
+	CurrentObject = obj;
 }
 
 jobject NetworkManager::GetCurrentObject()
 {
-	return NetworkManagerObj;
+	return CurrentObject;
 }
 
 jclass NetworkManager::GetCurrentClass()
 {
-	if (NetworkManagerObj == NULL) return NULL;
-	if (CurrentClass == NULL) CurrentClass = JNIHelper::env->GetObjectClass(NetworkManagerObj);
+	if (CurrentObject == NULL) return NULL;
+	if (CurrentClass == NULL) CurrentClass = JNIHelper::env->GetObjectClass(CurrentObject);
 
 	return CurrentClass;
 }

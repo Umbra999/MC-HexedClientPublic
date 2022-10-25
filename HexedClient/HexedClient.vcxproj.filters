@@ -108,9 +108,6 @@
     <ClInclude Include="Core\Settings.hpp">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="SDK\JNIHelper.hpp">
-      <Filter>SDK</Filter>
-    </ClInclude>
     <ClInclude Include="SDK\LaunchWrapper.hpp">
       <Filter>SDK</Filter>
     </ClInclude>
@@ -155,6 +152,63 @@
     </ClInclude>
     <ClInclude Include="SDK\NetHandlerPlayClient.hpp">
       <Filter>SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\WorldClient.hpp">
+      <Filter>SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Modules\Autoclicker.hpp">
+      <Filter>Core\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Modules\NoHitDelay.hpp">
+      <Filter>Core\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Modules\NoBuildDelay.hpp">
+      <Filter>Core\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Modules\FrameSpoof.hpp">
+      <Filter>Core\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Modules\AntiBot.hpp">
+      <Filter>Core\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Modules\AutoSprint.hpp">
+      <Filter>Core\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Modules\HitBoxExtender.hpp">
+      <Filter>Core\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Modules\NoFire.hpp">
+      <Filter>Core\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Modules\PlayerESP.hpp">
+      <Filter>Core\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Modules\PingSpoof.hpp">
+      <Filter>Core\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Wrapper\ClientConsole.hpp">
+      <Filter>Wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\Utils\MCHelper.hpp">
+      <Filter>SDK\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\ServerData.hpp">
+      <Filter>SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\InventoryPlayer.hpp">
+      <Filter>SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\ItemStack.hpp">
+      <Filter>SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\JNIHelper.hpp">
+      <Filter>SDK\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\Item.hpp">
+      <Filter>SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Modules\MurderExpose.hpp">
+      <Filter>Core\Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -215,9 +269,6 @@
     <ClCompile Include="SDK\World.cpp">
       <Filter>SDK</Filter>
     </ClCompile>
-    <ClCompile Include="SDK\JNIHelper.cpp">
-      <Filter>SDK</Filter>
-    </ClCompile>
     <ClCompile Include="Wrapper\Logger.cpp">
       <Filter>Wrapper</Filter>
     </ClCompile>
@@ -247,6 +298,63 @@
     </ClCompile>
     <ClCompile Include="SDK\NetHandlerPlayClient.cpp">
       <Filter>SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\WorldClient.cpp">
+      <Filter>SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Modules\Autoclicker.cpp">
+      <Filter>Core\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Modules\NoHitDelay.cpp">
+      <Filter>Core\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Modules\NoBuildDelay.cpp">
+      <Filter>Core\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Modules\FrameSpoof.cpp">
+      <Filter>Core\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Modules\AntiBot.cpp">
+      <Filter>Core\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Modules\AutoSprint.cpp">
+      <Filter>Core\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Modules\HitBoxExtender.cpp">
+      <Filter>Core\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Modules\NoFire.cpp">
+      <Filter>Core\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Modules\PlayerESP.cpp">
+      <Filter>Core\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Modules\PingSpoof.cpp">
+      <Filter>Core\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Wrapper\ClientConsole.cpp">
+      <Filter>Wrapper</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\Utils\MCHelper.cpp">
+      <Filter>SDK\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\ServerData.cpp">
+      <Filter>SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\InventoryPlayer.cpp">
+      <Filter>SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\ItemStack.cpp">
+      <Filter>SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\JNIHelper.cpp">
+      <Filter>SDK\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\Item.cpp">
+      <Filter>SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Modules\MurderExpose.cpp">
+      <Filter>Core\Modules</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

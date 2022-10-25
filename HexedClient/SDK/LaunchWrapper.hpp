@@ -4,10 +4,12 @@
 class LaunchWrapper
 {
 private:
-	inline static jclass minecraftClass = NULL;
-	inline static Minecraft minecraftInstance = NULL;
 	inline static jclass forgeClass = NULL;
-	static jclass getMinecraftClass();
+
+	inline static jclass minecraftClass = NULL;
+	inline static jfieldID getMinecraftFieldID = NULL;
+	inline static jobject getMinecraftObject = NULL;
+	inline static Minecraft MinecraftInstance = NULL;
 public:
 	static Minecraft getMinecraft();
 	static bool IsForge();

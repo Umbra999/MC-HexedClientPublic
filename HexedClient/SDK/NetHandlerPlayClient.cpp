@@ -2,18 +2,18 @@
 
 NetHandlerPlayClient::NetHandlerPlayClient(jobject obj)
 {
-	NetHandlerPlayClientObj = obj;
+	CurrentObject = obj;
 }
 
 jobject NetHandlerPlayClient::GetCurrentObject()
 {
-	return NetHandlerPlayClientObj;
+	return CurrentObject;
 }
 
 jclass NetHandlerPlayClient::GetCurrentClass()
 {
-	if (NetHandlerPlayClientObj == NULL) return NULL;
-	if (CurrentClass == NULL) CurrentClass = JNIHelper::env->GetObjectClass(NetHandlerPlayClientObj);
+	if (CurrentObject == NULL) return NULL;
+	if (CurrentClass == NULL) CurrentClass = JNIHelper::env->GetObjectClass(CurrentObject);
 
 	return CurrentClass;
 }

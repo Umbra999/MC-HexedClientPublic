@@ -4,8 +4,11 @@
 class JNIHelper
 {
 private:
-	inline static jobject classloader_obj;
-	inline static jmethodID findclass_md;
+	inline static jclass LaunchWrapperClassLoaderClass;
+	inline static jmethodID FindClassMethodID;
+	inline static jclass LaunchClass;
+	inline static jfieldID ClassLoaderFieldID;
+	inline static jobject ClassLoaderObject;
 
 public:
 	inline static JNIEnv* env;

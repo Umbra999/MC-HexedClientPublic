@@ -4,7 +4,7 @@
 class NetworkManager
 {
 private:
-	jobject NetworkManagerObj = NULL;
+	jobject CurrentObject = NULL;
 	jclass CurrentClass = NULL;
 
 public:

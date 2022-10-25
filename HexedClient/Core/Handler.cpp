@@ -1,57 +1,49 @@
 #include "Handler.hpp"
 #include <Windows.h>
 #include "Settings.hpp"
-#include "../SDK/LaunchWrapper.hpp"
 #include "../Wrapper/Logger.hpp"
-
-int Handler::CurrentTick = 0;
+#include "../SDK/LaunchWrapper.hpp"
+#include "Modules/Autoclicker.hpp"
+#include "Modules/NoHitDelay.hpp"
+#include "Modules/NoBuildDelay.hpp"
+#include "Modules/FrameSpoof.hpp"
+#include "Modules/AntiBot.hpp"
+#include "Modules/AutoSprint.hpp"
+#include "Modules/HitBoxExtender.hpp"
+#include "Modules/NoFire.hpp"
+#include "Modules/PlayerESP.hpp"
+#include "Modules/PingSpoof.hpp"
+#include "Modules/MurderExpose.hpp"
 
 void Handler::OnTick()
 {
-	Settings::DebugFPS = LaunchWrapper::getMinecraft().GetFPS();
+	SetSettings();
+	DoKeyBinds();
 
-	if (Settings::NoHitDelay)
-	{
-		LaunchWrapper::getMinecraft().SetLeftClickDelay(0);
-	}
-
-	if (Settings::NoBuildDelay)
-	{
-		LaunchWrapper::getMinecraft().SetRightClickDelay(0);
-	}
-
-	if (Settings::AutoSprint)
-	{
-		LaunchWrapper::getMinecraft().getLocalPlayer().setSprinting(true);
-	}
-
-	if (Settings::Autoclicker && (GetAsyncKeyState(VK_LBUTTON) & 0x8000))
-	{
-		if ((Settings::AutoclickerCount - CurrentTick++) >= 0) LaunchWrapper::getMinecraft().LeftClick();
-		if (CurrentTick >= 20) CurrentTick = 0;
-	}
-
-	if (Settings::FrameSpoof)
-	{
-		LaunchWrapper::getMinecraft().SetFPS(Settings::FrameSpoofValue);
-	}
-
-	if (Settings::AntiBot)
-	{
-		for (auto& val : LaunchWrapper::getMinecraft().getWorld().getPlayerList())
-		{
-			std::string s = JNIHelper::env->GetStringUTFChars(val.GetEntityLivingBase().GetEntity().GetDisplayName(), 0);
-			Logger::Log(s);
-		}
-	}
+	NoHitDelay::OnTick();
+	NoBuildDelay::OnTick();
+	FrameSpoof::OnTick();
+	AntiBot::OnTick();
+	HitBoxExtender::OnTick();
+	NoFire::OnTick();
+	PlayerESP::OnTick();
+	PingSpoof::OnTick();
+	MurderExpose::OnTick();
 }
 
 void Handler::DoKeyBinds()
 {
-	if (!LaunchWrapper::getMinecraft().InGameHasFocus()) return;
+	if (GetAsyncKeyState(VK_END)) Settings::ShouldUninject = true;
 
-	if (GetAsyncKeyState(VK_END))
-	{
-		Settings::ShouldUninject = true;
-	}
+	if (!LaunchWrapper::getMinecraft().InGameHasFocus()) return;
+	
+	AutoSprint::OnTick();
+	Autoclicker::OnTick();
+}
+
+void Handler::SetSettings()
+{
+	Settings::DebugFPS = LaunchWrapper::getMinecraft().GetFPS();
+	Settings::DebugPing = LaunchWrapper::getMinecraft().getLocalPlayer().getNetworkPlayerInfo().GetPing();
+	Settings::CanRenderMenu = LaunchWrapper::getMinecraft().getWorld().GetCurrentClass() != NULL;
 }
