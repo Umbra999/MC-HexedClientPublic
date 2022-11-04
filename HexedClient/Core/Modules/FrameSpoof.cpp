@@ -1,6 +1,6 @@
 #include "FrameSpoof.hpp"
 #include "../Settings.hpp"
-#include "../SDK/LaunchWrapper.hpp"
+#include "../../SDK/LaunchWrapper.hpp"
 
 void FrameSpoof::OnTick()
 {

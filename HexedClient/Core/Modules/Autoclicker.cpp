@@ -1,7 +1,7 @@
 #include "Autoclicker.hpp"
 #include <Windows.h>
 #include "../Settings.hpp"
-#include "../SDK/LaunchWrapper.hpp"
+#include "../../SDK/LaunchWrapper.hpp"
 
 int Autoclicker::TickCount = 0;
 

@@ -1,6 +1,6 @@
 #include "HitBoxExtender.hpp"
 #include "../Settings.hpp"
-#include "../SDK/LaunchWrapper.hpp"
+#include "../../SDK/LaunchWrapper.hpp"
 
 bool HitBoxExtender::NeedReset = false;
 float HitBoxExtender::DefaultWidth = 0.6f;

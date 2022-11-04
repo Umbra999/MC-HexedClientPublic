@@ -1,0 +1,48 @@
+﻿icl: : message #10441: The Intel(R) C++ Compiler Classic (ICC) is deprecated and will be removed from product release in the second half of 2023. The Intel(R) oneAPI DPC++/C++ Compiler (ICX) is the recommended compiler moving forward. Please transition to use this compiler. Use '/Qdiag-disable:10441' to disable this message.
+  GUI.cpp
+  Handler.cpp
+  AntiBot.cpp
+  Autoclicker.cpp
+  AutoSprint.cpp
+  FrameSpoof.cpp
+  HitBoxExtender.cpp
+  MurderExpose.cpp
+C:\Users\Umbra\Documents\GitHub\MC-HexedClient\HexedClient\Core\Modules\MurderExpose.cpp(79): error : class "std::basic_string<char, std::char_traits<char>, std::allocator<char>>" has no member "contains"
+    		if (!ItemName.contains("ºa")) continue;
+    		              ^
+  
+  NoBuildDelay.cpp
+  NoFire.cpp
+  NoHitDelay.cpp
+  PingSpoof.cpp
+  PlayerESP.cpp
+  Patching.cpp
+  Settings.cpp
+  dllmain.cpp
+  imgui.cpp
+  imgui_draw.cpp
+  imgui_impl_opengl3.cpp
+  imgui_impl_win32.cpp
+  imgui_tables.cpp
+  imgui_widgets.cpp
+  Entity.cpp
+  EntityLivingBase.cpp
+  InventoryPlayer.cpp
+  Item.cpp
+  ItemStack.cpp
+  JNIHelper.cpp
+  LaunchWrapper.cpp
+  LocalPlayer.cpp
+  Minecraft.cpp
+  EntityPlayer.cpp
+  NetHandlerPlayClient.cpp
+  NetworkManager.cpp
+  NetworkPlayerInfo.cpp
+  ServerData.cpp
+  JavaUtil.cpp
+  MCHelper.cpp
+  World.cpp
+  WorldClient.cpp
+  ClientConsole.cpp
+  Logger.cpp
+  Utils.cpp

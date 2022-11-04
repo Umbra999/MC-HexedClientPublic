@@ -48,9 +48,9 @@
 #include <windows.h>
 #endif
 
-#if IMGUI_USE_GLFW 1
-#include <GLFW/glfw3.h>
-#endif
+//#if IMGUI_USE_GLFW 1
+//#include <GLFW/glfw3.h>
+//#endif
 
 #if defined(WINAPI_FAMILY) && (WINAPI_FAMILY == WINAPI_FAMILY_APP) // UWP doesn't have all Win32 functions
 #define IMGUI_DISABLE_WIN32_DEFAULT_CLIPBOARD_FUNCTIONS
@@ -4434,9 +4434,9 @@ bool ImGui::BeginChildEx(const char* name, ImGuiID id, const ImVec2& size_arg, b
         {
             int winPosX = 0, winPosY = 0;
 
-#if IMGUI_USE_GLFW 1
-            glfwGetWindowPos((GLFWwindow*)io.ClipboardUserData, &winPosX, &winPosY);
-#endif
+//#if IMGUI_USE_GLFW 1
+//            glfwGetWindowPos((GLFWwindow*)io.ClipboardUserData, &winPosX, &winPosY);
+//#endif
 
             POINT p;
             GetCursorPos(&p);
@@ -4444,9 +4444,9 @@ bool ImGui::BeginChildEx(const char* name, ImGuiID id, const ImVec2& size_arg, b
             // Set the window position
             if (active)
             {
-#if IMGUI_USE_GLFW 1
-                glfwSetWindowMonitor((GLFWwindow*)io.ClipboardUserData, NULL, (p.x - lastCursor.x), (p.y - lastCursor.y), io.DisplaySize.x, io.DisplaySize.y, GLFW_DONT_CARE);
-#endif
+//#if IMGUI_USE_GLFW 1
+//                glfwSetWindowMonitor((GLFWwindow*)io.ClipboardUserData, NULL, (p.x - lastCursor.x), (p.y - lastCursor.y), io.DisplaySize.x, io.DisplaySize.y, GLFW_DONT_CARE);
+//#endif
             }
             else if (!active && (p.x - winPosX < io.DisplaySize.x) && (size_arg.y > (p.y - (winPosY))))
             {

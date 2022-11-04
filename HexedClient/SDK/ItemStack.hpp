@@ -16,6 +16,10 @@ private:
 	jobject getUnlocalizedNameObject = NULL;
 	jstring getUnlocalizedNameString = NULL;
 
+	jmethodID getDisplayNameMethodID = NULL;
+	jobject getDisplayNameObject = NULL;
+	jstring getDisplayNameString = NULL;
+
 public:
 	ItemStack(jobject obj);
 	jobject GetCurrentObject();
@@ -23,4 +27,5 @@ public:
 
 	Item GetItem();
 	jstring getUnlocalizedName();
+	jstring getDisplayName();
 };

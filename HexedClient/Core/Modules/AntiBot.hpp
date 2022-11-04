@@ -1,7 +1,7 @@
 #pragma once
 #include <map>
 #include <string>
-#include "../SDK/EntityPlayer.hpp"
+#include "../../SDK/EntityPlayer.hpp"
 
 class AntiBot
 {

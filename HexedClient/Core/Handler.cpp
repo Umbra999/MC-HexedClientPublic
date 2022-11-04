@@ -2,6 +2,7 @@
 #include <Windows.h>
 #include "Settings.hpp"
 #include "../Wrapper/Logger.hpp"
+#include "../Wrapper/ClientConsole.hpp";
 #include "../SDK/LaunchWrapper.hpp"
 #include "Modules/Autoclicker.hpp"
 #include "Modules/NoHitDelay.hpp"
@@ -46,4 +47,9 @@ void Handler::SetSettings()
 	Settings::DebugFPS = LaunchWrapper::getMinecraft().GetFPS();
 	Settings::DebugPing = LaunchWrapper::getMinecraft().getLocalPlayer().getNetworkPlayerInfo().GetPing();
 	Settings::CanRenderMenu = LaunchWrapper::getMinecraft().getWorld().GetCurrentClass() != NULL;
+}
+
+void Handler::OnJoinedWorld()
+{
+	ClientConsole::ClearLogs();
 }

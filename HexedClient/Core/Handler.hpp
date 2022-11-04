@@ -8,4 +8,5 @@ private:
 
 public:
 	static void OnTick();
+	static void OnJoinedWorld();
 };

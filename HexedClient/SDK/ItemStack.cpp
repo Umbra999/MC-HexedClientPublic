@@ -65,3 +65,27 @@ jstring ItemStack::getUnlocalizedName()
 
 	return getUnlocalizedNameString;
 }
+
+jstring ItemStack::getDisplayName()
+{
+	if (GetCurrentClass() == NULL) return NULL;
+
+	if (getDisplayNameString == NULL)
+	{
+		if (getDisplayNameMethodID == NULL)
+		{
+			getDisplayNameMethodID = JNIHelper::env->GetMethodID(GetCurrentClass(), "func_82833_r", "()Ljava/lang/String;");
+			if (getDisplayNameMethodID == NULL) return NULL;
+		}
+
+		if (getDisplayNameObject == NULL)
+		{
+			getDisplayNameObject = JNIHelper::env->CallObjectMethod(GetCurrentObject(), getDisplayNameMethodID);
+			if (getDisplayNameObject == NULL) return NULL;
+		}
+
+		getDisplayNameString = (jstring)getDisplayNameObject;
+	}
+
+	return getDisplayNameString;
+}

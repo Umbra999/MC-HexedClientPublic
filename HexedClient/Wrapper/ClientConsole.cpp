@@ -19,6 +19,11 @@ void ClientConsole::Log(std::string log)
 	LogLines.push_back(log);
 }
 
+void ClientConsole::ClearLogs()
+{
+	LogLines.clear();
+}
+
 std::vector<std::string> ClientConsole::GetLogs()
 {
 	return LogLines;

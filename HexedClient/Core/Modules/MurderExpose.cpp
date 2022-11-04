@@ -1,33 +1,91 @@
 #include "MurderExpose.hpp"
 #include "../Settings.hpp"
-#include "../SDK/LaunchWrapper.hpp"
-#include "../Wrapper/Logger.hpp"
+#include "../../SDK/LaunchWrapper.hpp"
+#include "../../Wrapper/Logger.hpp"
 #include "../../Wrapper/ClientConsole.hpp"
+#include "../../SDK/Utils/MCHelper.hpp"
+
+std::vector<std::string> MurderExpose::MurderItems =
+{
+	"item.swordGold",
+	"item.swordDiamond",
+	"item.swordIron",
+	"item.swordStone",
+	"item.swordWood",
+	"item.shovelGold",
+	"item.shovelDiamond",
+	"item.shovelIron",
+	"item.shovelStone",
+	"item.shovelWood",
+	"item.hatchedGold",
+	"item.hatchedDiamond",
+	"item.hatchedIron",
+	"item.hatchedStone",
+	"item.hatchedWood",
+	"item.pickaxeGold",
+	"item.pickaxeDiamond",
+	"item.pickaxeIron",
+	"item.pickaxeStone",
+	"item.pickaxeWood",
+	"item.hoeGold",
+	"item.hoeDiamond",
+	"item.hoeIron",
+	"item.hoeStone",
+	"item.hoeWood",
+	"item.feather",
+	"item.carrotGolden",
+	"item.nameTag",
+	"item.carrotOnAStick",
+	"item.blazeRod",
+	"tile.notGate",
+	"tile.torch",
+	"item.bone",
+	"item.cookie",
+	"item.stick",
+	"item.prismarineShard",
+	"item.apple",
+	"item.speckledMelon",
+	"item.beefCooked",
+	"item.pumpkinPie",
+	"item.carrots",
+	"item.shears",
+	"item.fish.salmon.raw",
+	"tile.doublePlant.rose",
+	"tile.deadbush",
+	"item.appleGold",
+	"tile.sponge.dry",
+	"tile.sponge.wet",
+	"item.boath",
+	"tile.dragonEgg",
+	"item.netherbrick",
+	"item.netherquartz",
+	"item.dyePowder.red",
+	"item.book"
+};
 
 void MurderExpose::OnTick()
 {
-	if (Settings::MurderExpose)
+	if (!Settings::MurderExpose) return;
+
+	for (auto& player : LaunchWrapper::getMinecraft().getWorld().getPlayerList())
 	{
-		for (auto& player : LaunchWrapper::getMinecraft().getWorld().getPlayerList())
+		if (JNIHelper::env->IsSameObject(player.GetCurrentObject(), LaunchWrapper::getMinecraft().getLocalPlayer().GetCurrentObject())) continue;
+
+		if (player.getCurrentEquipedItem().getUnlocalizedName() == NULL) continue;
+		if (player.getCurrentEquipedItem().getDisplayName() == NULL) continue;
+
+		std::string ItemName = MCHelper::JstringToString(player.getCurrentEquipedItem().getDisplayName());
+
+		if (!ItemName.contains("§a")) continue;
+
+		std::string ItemRealName = MCHelper::JstringToString(player.getCurrentEquipedItem().getUnlocalizedName());
+
+		if (std::find(MurderItems.begin(), MurderItems.end(), ItemRealName) != MurderItems.end())
 		{
-			if (JNIHelper::env->IsSameObject(player.GetCurrentObject(), LaunchWrapper::getMinecraft().getLocalPlayer().GetCurrentObject())) continue;
+			std::string DisplayName = MCHelper::JstringToString(player.GetDisplayName());
 
-			if (player.getCurrentEquipedItem().getUnlocalizedName() == NULL) continue;
-
-			std::string HeldItem = JNIHelper::env->GetStringUTFChars(player.getCurrentEquipedItem().getUnlocalizedName(), 0);
-
-			if (HeldItem == "item.swordGold" || HeldItem == "item.swordDiamond" || HeldItem == "item.swordIron" || HeldItem == "item.swordStone" || HeldItem == "item.swordWood" || 
-				HeldItem == "item.shovelGold" || HeldItem == "item.shovelDiamond" || HeldItem == "item.shovelIron" || HeldItem == "item.shovelStone" || HeldItem == "item.shovelWood" || 
-				HeldItem == "item.hatchedGold" || HeldItem == "item.hatchedDiamond" || HeldItem == "item.hatchedIron" || HeldItem == "item.hatchedStone" || HeldItem == "item.hatchedWood" ||
-				HeldItem == "item.pickaxeGold" || HeldItem == "item.pickaxeDiamond" || HeldItem == "item.pickaxeIron" || HeldItem == "item.pickaxeStone" || HeldItem == "item.pickaxeWood" ||
-				HeldItem == "item.hoeGold" || HeldItem == "item.hoeDiamond" || HeldItem == "item.hoeIron" || HeldItem == "item.hoeStone" || HeldItem == "item.hoeWood" ||
-				HeldItem == "item.feather" || HeldItem == "item.carrotGolden" || HeldItem == "item.nameTag" || HeldItem == "item.carrotOnAStick" || HeldItem == "item.blazeRod" || HeldItem == "tile.notGate" || HeldItem == "tile.torch" || HeldItem == "item.bone" || HeldItem == "item.cookie" || HeldItem == "item.stick" || HeldItem == "item.prismarineShard" || HeldItem == "item.apple" || HeldItem == "item.speckledMelon" || HeldItem == "item.beefCooked" ||
-				HeldItem == "item.pumpkinPie" || HeldItem == "item.carrots" || HeldItem == "item.shears" || HeldItem == "item.fish.salmon.raw" || HeldItem == "tile.doublePlant.rose" || HeldItem == "tile.deadbush" || HeldItem == "item.appleGold" || HeldItem == "tile.sponge.dry" || HeldItem == "item.boath" || HeldItem == "tile.dragonEgg" || HeldItem == "item.netherbrick" || HeldItem == "item.netherquartz" || HeldItem == "item.dyePowder.red" || HeldItem == "item.book")
-			{
-				std::string DisplayName = JNIHelper::env->GetStringUTFChars(player.GetDisplayName(), 0);
-				Logger::Log(DisplayName + " is the Murder: " + HeldItem);
-				ClientConsole::Log(DisplayName + " is the Murder: " + HeldItem);
-			}
+			Logger::Log(DisplayName + " got detected as Murder");
+			ClientConsole::Log(DisplayName + " got detected as Murder");
 		}
 	}
 }

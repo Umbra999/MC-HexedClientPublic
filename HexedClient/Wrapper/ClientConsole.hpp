@@ -11,5 +11,6 @@ private:
 
 public:
 	static void Log(std::string text);
+	static void ClearLogs();
 	static std::vector<std::string> GetLogs();
 };

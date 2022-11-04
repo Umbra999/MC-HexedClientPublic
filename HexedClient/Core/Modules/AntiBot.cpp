@@ -1,9 +1,9 @@
 #include "AntiBot.hpp"
 #include "../Settings.hpp"
-#include "../SDK/LaunchWrapper.hpp"
-#include "../Wrapper/Logger.hpp"
+#include "../../SDK/LaunchWrapper.hpp"
+#include "../../Wrapper/Logger.hpp"
 #include "../../Wrapper/ClientConsole.hpp"
-#include "../SDK/Utils/MCHelper.hpp"
+#include "../../SDK/Utils/MCHelper.hpp"
 
 std::map<std::string, int> AntiBot::PossibleBots;
 
@@ -51,7 +51,7 @@ void AntiBot::OnTick()
 				jint Ping = player.getNetworkPlayerInfo().GetPing();
 				if (Ping == 0)
 				{
-					std::string DisplayName = JNIHelper::env->GetStringUTFChars(player.GetDisplayName(), 0);
+					std::string DisplayName = MCHelper::JstringToString(player.GetDisplayName());
 					if (!PossibleBots.count(DisplayName)) PossibleBots.insert({ DisplayName, 0 });
 				}
 			}
@@ -61,7 +61,7 @@ void AntiBot::OnTick()
 
 bool AntiBot::IsNameValid(EntityPlayer player)
 {
-	std::string DisplayName = JNIHelper::env->GetStringUTFChars(player.GetDisplayName(), 0);
+	std::string DisplayName = MCHelper::JstringToString(player.GetDisplayName());
 	bool ContainsIllegalChars = DisplayName.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_") != std::string::npos;
 	return !ContainsIllegalChars;
 }
@@ -69,7 +69,8 @@ bool AntiBot::IsNameValid(EntityPlayer player)
 bool AntiBot::IsPingValid(EntityPlayer player)
 {
 	jint Ping = player.getNetworkPlayerInfo().GetPing();
-	return Ping > -1;
+	if (Ping < 0 || Ping > 9999) return false;
+	return true;
 }
 
 bool AntiBot::IsUUIDValid(EntityPlayer player)
@@ -80,7 +81,7 @@ bool AntiBot::IsUUIDValid(EntityPlayer player)
 
 void AntiBot::FlagBot(EntityPlayer player)
 {
-	std::string DisplayName = JNIHelper::env->GetStringUTFChars(player.GetDisplayName(), 0);
+	std::string DisplayName = MCHelper::JstringToString(player.GetDisplayName());
 	bool ContainsIllegalChars = DisplayName.find_first_not_of("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890_") != std::string::npos;
 	if (ContainsIllegalChars) DisplayName = "[INVALID NAME]";
 
