@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 
 class Settings
 {
@@ -6,6 +7,8 @@ public:
 	static bool ShouldUninject;
 	static int DebugFPS;
 	static int DebugPing;
+	static int DebugWidth;
+	static int DebugHeight;
 	static bool CanRenderMenu;
 	static bool AutoSprint;
 	static bool NoHitDelay;
@@ -26,5 +29,8 @@ public:
 	static int PingSpoofValue;
 	static bool NoFire;
 	static bool PlayerESP;
+	static bool ChestESP;
 	static bool MurderExpose;
+	static bool NameSpoof;
+	static std::string NameSpoofValue;
 };

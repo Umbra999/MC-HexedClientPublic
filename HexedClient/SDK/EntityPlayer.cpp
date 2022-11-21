@@ -18,7 +18,7 @@ jclass EntityPlayer::GetCurrentClass()
 	return CurrentClass;
 }
 
-NetworkPlayerInfo EntityPlayer::getNetworkPlayerInfo()
+NetworkPlayerInfo EntityPlayer::getNetworkPlayerInfo() // AbstractClientPlayer
 {
 	if (GetCurrentClass() == NULL) return NULL;
 
@@ -26,7 +26,7 @@ NetworkPlayerInfo EntityPlayer::getNetworkPlayerInfo()
 	{
 		if (getNetworkPlayerInfoMethodID == NULL)
 		{
-			getNetworkPlayerInfoMethodID = JNIHelper::env->GetMethodID(GetCurrentClass(), "func_175155_b", "()Lnet/minecraft/client/network/NetworkPlayerInfo;");
+			getNetworkPlayerInfoMethodID = JNIHelper::IsForge() ? JNIHelper::env->GetMethodID(GetCurrentClass(), "func_175155_b", "()Lnet/minecraft/client/network/NetworkPlayerInfo;") : JNIHelper::env->GetMethodID(GetCurrentClass(), "b", "()Lbdc;");
 			if (getNetworkPlayerInfoMethodID == NULL) return NULL;
 		}
 
@@ -50,7 +50,7 @@ InventoryPlayer EntityPlayer::getInventoryPlayer()
 	{
 		if (getInventoryPlayerFieldID == NULL)
 		{
-			getInventoryPlayerFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71071_by", "Lnet/minecraft/entity/player/InventoryPlayer;");
+			getInventoryPlayerFieldID = JNIHelper::IsForge() ? JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71071_by", "Lnet/minecraft/entity/player/InventoryPlayer;") : JNIHelper::env->GetFieldID(GetCurrentClass(), "bi", "Lwm;");
 			if (getInventoryPlayerFieldID == NULL) return NULL;
 		}
 
@@ -74,7 +74,7 @@ ItemStack EntityPlayer::getCurrentEquipedItem()
 	{
 		if (getCurrentEquipedItemMethodID == NULL)
 		{
-			getCurrentEquipedItemMethodID = JNIHelper::env->GetMethodID(GetCurrentClass(), "func_71045_bC", "()Lnet/minecraft/item/ItemStack;");
+			getCurrentEquipedItemMethodID = JNIHelper::IsForge() ? JNIHelper::env->GetMethodID(GetCurrentClass(), "func_71045_bC", "()Lnet/minecraft/item/ItemStack;") : JNIHelper::env->GetMethodID(GetCurrentClass(), "bZ", "()Lzx;");
 			if (getCurrentEquipedItemMethodID == NULL) return NULL;
 		}
 

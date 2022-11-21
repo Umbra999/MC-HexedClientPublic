@@ -4,6 +4,8 @@
 bool Settings::ShouldUninject = false;
 int Settings::DebugFPS = 0;
 int Settings::DebugPing = 0;
+int Settings::DebugWidth = 0;
+int Settings::DebugHeight = 0;
 bool Settings::CanRenderMenu = false;
 
 //MOVEMENT
@@ -31,7 +33,14 @@ int Settings::FrameSpoofValue = 999;
 bool Settings::PingSpoof;
 int Settings::PingSpoofValue = 999;
 bool Settings::NoFire = false;
+
+//ESP
 bool Settings::PlayerESP = false;
+bool Settings::ChestESP = false;
+
+//MISC
+bool Settings::NameSpoof = false;
+std::string Settings::NameSpoofValue = "Hexed";
 
 //HYPIXEL
 bool Settings::MurderExpose = false;

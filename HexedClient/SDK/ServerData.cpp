@@ -26,7 +26,7 @@ jlong ServerData::getPingToServer()
 	{
 		if (getPingToServerFieldID == NULL)
 		{
-			getPingToServerFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_78844_e", "J");
+			getPingToServerFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), JNIHelper::IsForge() ? "field_78844_e" : "e", "J");
 			if (getPingToServerFieldID == NULL) return NULL;
 		}
 

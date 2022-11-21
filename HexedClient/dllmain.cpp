@@ -32,7 +32,7 @@ void Initialize()
 
         if (res == JNI_OK)
         {
-            std::string Mappings = LaunchWrapper::IsForge() ? "FORGE" : "VANILLA";
+            std::string Mappings = JNIHelper::IsForge() ? "FORGE" : "VANILLA";
             Logger::Log("Minecraft running on: " + Mappings);
 
             Logger::Log("Waiting for World to Initialize...");

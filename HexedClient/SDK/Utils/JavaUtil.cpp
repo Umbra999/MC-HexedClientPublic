@@ -12,28 +12,76 @@ jclass JavaUtil::GetListClass()
 	return ListClass;
 }
 
+jclass JavaUtil::GetThreadClass()
+{
+	if (ThreadClass == NULL) ThreadClass = JNIHelper::env->FindClass("java/util/List");
+	return ThreadClass;
+}
+
+jclass JavaUtil::GetThreadGroupClass()
+{
+	if (ThreadGroupClass == NULL) ThreadGroupClass = JNIHelper::env->FindClass("java/lang/ThreadGroup");
+	return ThreadGroupClass;
+}
+
 jint JavaUtil::GetArraySize(jobject obj)
 {
 	if (GetArrayListClass() == NULL) return NULL;
 
-	if (ArrayListSizeField == NULL)
+	if (ArrayListSizeFieldID == NULL)
 	{
-		ArrayListSizeField = JNIHelper::env->GetFieldID(GetArrayListClass(), "size", "I");
-		if (ArrayListSizeField == NULL) return NULL;
+		ArrayListSizeFieldID = JNIHelper::env->GetFieldID(GetArrayListClass(), "size", "I");
+		if (ArrayListSizeFieldID == NULL) return NULL;
 	}
 
-	return JNIHelper::env->GetIntField(obj, ArrayListSizeField);
+	return JNIHelper::env->GetIntField(obj, ArrayListSizeFieldID);
 }
 
 jobjectArray JavaUtil::GetArray(jobject obj)
 {
 	if (GetArrayListClass() == NULL) return NULL;
 
-	if (ArrayListElementDataField == NULL)
+	if (ArrayListElementDataFieldID == NULL)
 	{
-		ArrayListElementDataField = JNIHelper::env->GetFieldID(GetArrayListClass(), "elementData", "[Ljava/lang/Object;");
-		if (ArrayListElementDataField == NULL) return NULL;
+		ArrayListElementDataFieldID = JNIHelper::env->GetFieldID(GetArrayListClass(), "elementData", "[Ljava/lang/Object;");
+		if (ArrayListElementDataFieldID == NULL) return NULL;
 	}
 
-	return (jobjectArray)JNIHelper::env->GetObjectField(obj, ArrayListElementDataField);
+	return (jobjectArray)JNIHelper::env->GetObjectField(obj, ArrayListElementDataFieldID);
+}
+
+jobject JavaUtil::GetCurrentThread()
+{
+	if (GetThreadClass() == NULL) return NULL;
+
+	if (CurrentThread == NULL)
+	{
+		if (CurrentThreadMethodID == NULL)
+		{
+			CurrentThreadMethodID = JNIHelper::env->GetMethodID(GetThreadClass(), "currentThread", "()Ljava/lang/Thread;");
+			if (CurrentThreadMethodID == NULL) return NULL;
+		}
+
+		CurrentThread = JNIHelper::env->CallObjectMethod(GetThreadClass(), CurrentThreadMethodID);
+	}
+
+	return CurrentThread;
+}
+
+jobject JavaUtil::GetThreadGroup()
+{
+	if (GetThreadGroupClass() == NULL) return NULL;
+
+	if (CurrentThreadGroup == NULL)
+	{
+		if (CurrentThreadGroupMethodID == NULL)
+		{
+			CurrentThreadGroupMethodID = JNIHelper::env->GetMethodID(GetThreadGroupClass(), "getThreadGroup", "()Ljava/lang/ThreadGroup;");
+			if (CurrentThreadGroupMethodID == NULL) return NULL;
+		}
+
+		CurrentThreadGroup = JNIHelper::env->CallObjectMethod(GetThreadGroupClass(), CurrentThreadGroupMethodID);
+	}
+
+	return CurrentThreadGroup;
 }

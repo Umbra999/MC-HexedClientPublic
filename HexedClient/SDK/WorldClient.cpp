@@ -25,7 +25,7 @@ void WorldClient::RemoveEntity(Entity entity)
 
 	if (removeEntityMethodID == NULL)
 	{
-		removeEntityMethodID = JNIHelper::env->GetMethodID(GetCurrentClass(), "func_72900_e", "(Lnet/minecraft/entity/Entity;)V");
+		removeEntityMethodID = JNIHelper::IsForge() ? JNIHelper::env->GetMethodID(GetCurrentClass(), "func_72900_e", "(Lnet/minecraft/entity/Entity;)V") : JNIHelper::env->GetMethodID(GetCurrentClass(), "e", "(Lpk;)V");
 		if (removeEntityMethodID == NULL) return;
 	}
 

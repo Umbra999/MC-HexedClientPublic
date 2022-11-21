@@ -204,10 +204,19 @@
     <ClInclude Include="SDK\JNIHelper.hpp">
       <Filter>SDK\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="SDK\Item.hpp">
+    <ClInclude Include="Core\Modules\MurderExpose.hpp">
+      <Filter>Core\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\RenderManager.hpp">
       <Filter>SDK</Filter>
     </ClInclude>
-    <ClInclude Include="Core\Modules\MurderExpose.hpp">
+    <ClInclude Include="SDK\ActiveRenderInfo.hpp">
+      <Filter>SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="SDK\Session.hpp">
+      <Filter>SDK</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Modules\NameSpoofer.hpp">
       <Filter>Core\Modules</Filter>
     </ClInclude>
   </ItemGroup>
@@ -350,10 +359,19 @@
     <ClCompile Include="SDK\JNIHelper.cpp">
       <Filter>SDK\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="SDK\Item.cpp">
+    <ClCompile Include="Core\Modules\MurderExpose.cpp">
+      <Filter>Core\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\RenderManager.cpp">
       <Filter>SDK</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Modules\MurderExpose.cpp">
+    <ClCompile Include="SDK\ActiveRenderInfo.cpp">
+      <Filter>SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="SDK\Session.cpp">
+      <Filter>SDK</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Modules\NameSpoofer.cpp">
       <Filter>Core\Modules</Filter>
     </ClCompile>
   </ItemGroup>

@@ -8,13 +8,13 @@ Minecraft LaunchWrapper::getMinecraft()
 	{
 		if (minecraftClass == NULL)
 		{
-			minecraftClass = JNIHelper::ForgeFindClass("net.minecraft.client.Minecraft");
+			minecraftClass = JNIHelper::IsForge() ? JNIHelper::ForgeFindClass("net.minecraft.client.Minecraft") : JNIHelper::env->FindClass("ave");
 			if (minecraftClass == NULL) return NULL;
 		}
 
 		if (getMinecraftFieldID == NULL)
 		{
-			getMinecraftFieldID = JNIHelper::env->GetStaticFieldID(minecraftClass, "field_71432_P", "Lnet/minecraft/client/Minecraft;");
+			getMinecraftFieldID = JNIHelper::IsForge() ? JNIHelper::env->GetStaticFieldID(minecraftClass, "field_71432_P", "Lnet/minecraft/client/Minecraft;") : JNIHelper::env->GetStaticFieldID(minecraftClass, "S", "Lave;");
 			if (getMinecraftFieldID == NULL) return NULL;
 		}
 
@@ -30,8 +30,18 @@ Minecraft LaunchWrapper::getMinecraft()
 	return MinecraftInstance;
 }
 
-bool LaunchWrapper::IsForge()
+ActiveRenderInfo LaunchWrapper::getActiveRenderInfo()
 {
-	if (forgeClass == NULL) forgeClass = JNIHelper::env->FindClass("net/minecraftforge/common/ForgeVersion");
-	return forgeClass != NULL;
+	if (ActiveRenderInfoInstance.GetCurrentClass() == NULL)
+	{
+		if (ActiveRenderInfoClass == NULL)
+		{
+			ActiveRenderInfoClass = JNIHelper::IsForge() ? JNIHelper::ForgeFindClass("net.minecraft.client.renderer.ActiveRenderInfo") : JNIHelper::env->FindClass("auz");
+			if (ActiveRenderInfoClass == NULL) return NULL;
+		}
+
+		ActiveRenderInfoInstance = ActiveRenderInfo(ActiveRenderInfoClass);
+	}
+
+	return ActiveRenderInfoInstance;
 }

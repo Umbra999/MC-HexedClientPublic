@@ -1,5 +1,8 @@
 #include "JNIHelper.hpp"
 
+bool JNIHelper::AlreadyCheckedForge = false;
+bool JNIHelper::IsForgeExisting = false;
+
 jclass JNIHelper::ForgeFindClass(const char* name)
 {
 	if (LaunchWrapperClassLoaderClass == NULL)
@@ -38,4 +41,19 @@ jclass JNIHelper::ForgeFindClass(const char* name)
 	JNIHelper::env->DeleteLocalRef(jname);
 
 	return cls;
+}
+
+bool JNIHelper::IsForge()
+{
+	if (!AlreadyCheckedForge)
+	{
+		AlreadyCheckedForge = true;
+		jclass forgeClass = JNIHelper::env->FindClass("net/minecraftforge/common/ForgeVersion");
+		if (forgeClass != NULL)
+		{
+			JNIHelper::env->DeleteLocalRef(forgeClass);
+			IsForgeExisting = true;
+		}
+	}
+	return IsForgeExisting;
 }

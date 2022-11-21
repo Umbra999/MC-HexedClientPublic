@@ -47,6 +47,8 @@ void Handler::SetSettings()
 	Settings::DebugFPS = LaunchWrapper::getMinecraft().GetFPS();
 	Settings::DebugPing = LaunchWrapper::getMinecraft().getLocalPlayer().getNetworkPlayerInfo().GetPing();
 	Settings::CanRenderMenu = LaunchWrapper::getMinecraft().getWorld().GetCurrentClass() != NULL;
+	Settings::DebugHeight = LaunchWrapper::getMinecraft().GetDisplayHeight();
+	Settings::DebugWidth = LaunchWrapper::getMinecraft().GetDisplayWidth();
 }
 
 void Handler::OnJoinedWorld()

@@ -3,6 +3,8 @@
 #include "WorldClient.hpp"
 #include "NetworkManager.hpp"
 #include "ServerData.hpp"
+#include "RenderManager.hpp"
+#include "Session.hpp"
 
 class Minecraft
 {
@@ -26,6 +28,14 @@ private:
 	jobject getServerDataObject = NULL;
 	ServerData ServerDataInstance = NULL;
 
+	jfieldID getRenderManagerFieldID = NULL;
+	jobject getRenderManagerObject = NULL;
+	RenderManager RenderManagerInstance = NULL;
+
+	jfieldID getSessionFieldID = NULL;
+	jobject getSessionObject = NULL;
+	Session SessionInstance = NULL;
+
 	jfieldID leftClickFieldID = NULL;
 
 	jfieldID rightClickFieldID = NULL;
@@ -40,6 +50,12 @@ private:
 	jfieldID gameHasFocusFieldID = NULL;
 	jboolean hasIngameFocusBool = NULL;
 
+	jfieldID displayWidthFieldID = NULL;
+	jint displayWidthInt = NULL;
+
+	jfieldID displayHeightFieldID = NULL;
+	jint displayHeightInt = NULL;
+
 public:
 	Minecraft(jobject);
 	jobject GetCurrentObject();
@@ -49,6 +65,8 @@ public:
 	WorldClient getWorld();
 	NetworkManager getNetworkManager();
 	ServerData getServerData();
+	RenderManager getRenderManager();
+	Session getSession();
 	void SetLeftClickDelay(int);
 	void SetRightClickDelay(int);
 	void LeftClick();
@@ -56,4 +74,6 @@ public:
 	bool InGameHasFocus();
 	int GetFPS();
 	void SetFPS(jint);
+	int GetDisplayHeight();
+	int GetDisplayWidth();
 };

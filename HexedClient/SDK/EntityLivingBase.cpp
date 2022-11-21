@@ -27,7 +27,7 @@ jfloat EntityLivingBase::GetHealth()
 	{
 		if (getHealthMethodID == NULL)
 		{
-			getHealthMethodID = JNIHelper::env->GetMethodID(GetCurrentClass(), "func_110143_aJ", "()F");
+			getHealthMethodID = JNIHelper::env->GetMethodID(GetCurrentClass(), JNIHelper::IsForge() ? "func_110143_aJ" : "bn", "()F");
 			if (getHealthMethodID == NULL) return NULL;
 		}
 

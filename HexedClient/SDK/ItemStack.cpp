@@ -18,30 +18,6 @@ jclass ItemStack::GetCurrentClass()
 	return CurrentClass;
 }
 
-Item ItemStack::GetItem() // DONT WORK 
-{
-	if (GetCurrentClass() == NULL) return NULL;
-
-	if (ItemInstance.GetCurrentClass() == NULL)
-	{
-		if (getItemFieldID == NULL)
-		{
-			getItemFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_151002_e", "Lnet/minecraft/item/Item;");
-			if (getItemFieldID == NULL) return NULL;
-		}
-
-		if (getItemObject == NULL)
-		{
-			getItemObject = JNIHelper::env->GetObjectField(GetCurrentObject(), getItemFieldID);
-			if (getItemObject == NULL) return NULL;
-		}
-
-		ItemInstance = Item(getItemObject);
-	}
-
-	return ItemInstance;
-}
-
 jstring ItemStack::getUnlocalizedName()
 {
 	if (GetCurrentClass() == NULL) return NULL;
@@ -50,7 +26,7 @@ jstring ItemStack::getUnlocalizedName()
 	{
 		if (getUnlocalizedNameMethodID == NULL)
 		{
-			getUnlocalizedNameMethodID = JNIHelper::env->GetMethodID(GetCurrentClass(), "func_77977_a", "()Ljava/lang/String;");
+			getUnlocalizedNameMethodID = JNIHelper::env->GetMethodID(GetCurrentClass(), JNIHelper::IsForge() ? "func_77977_a" : "a", "()Ljava/lang/String;");
 			if (getUnlocalizedNameMethodID == NULL) return NULL;
 		}
 
@@ -74,7 +50,7 @@ jstring ItemStack::getDisplayName()
 	{
 		if (getDisplayNameMethodID == NULL)
 		{
-			getDisplayNameMethodID = JNIHelper::env->GetMethodID(GetCurrentClass(), "func_82833_r", "()Ljava/lang/String;");
+			getDisplayNameMethodID = JNIHelper::env->GetMethodID(GetCurrentClass(), JNIHelper::IsForge() ? "func_82833_r" : "q", "()Ljava/lang/String;");
 			if (getDisplayNameMethodID == NULL) return NULL;
 		}
 

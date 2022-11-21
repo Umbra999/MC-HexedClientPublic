@@ -1,12 +1,13 @@
-#include "../Wrapper/Logger.hpp"
 #include "GUI.hpp"
+#include <vector>
+#include <gl/GL.h>
 #include "../ImGui/imgui.h"
 #include "../ImGui/imgui_impl_win32.h"
 #include "../ImGui/imgui_impl_opengl3.h"
-#include <gl/GL.h>
 #include "Settings.hpp"
-#include <vector>
+#include "../Wrapper/Logger.hpp"
 #include "../Wrapper/ClientConsole.hpp"
+#include "../Core/Modules/NameSpoofer.hpp"
 
 #pragma comment(lib, "opengl32.lib")
 
@@ -99,87 +100,91 @@ void GUI::Delete()
 	SetWindowLongPtrW(minecraftWindow, GWLP_WNDPROC, (LONG_PTR)originalWNDPROC);
 }
 
-void GUI::Render()
+void GUI::RenderMain()
 {
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplWin32_NewFrame();
-	ImGui::NewFrame();
-
-	// MAIN GUI START
 	ImGui::Begin("H E X E D");
 
 	if (ImGui::CollapsingHeader("MOVEMENT"))
 	{
-		if (ImGui::Checkbox("Auto Sprint", &Settings::AutoSprint));
+		ImGui::Checkbox("Auto Sprint", &Settings::AutoSprint);
 	}
 
 	if (ImGui::CollapsingHeader("COMBAT"))
 	{
-		if (ImGui::Checkbox("Autoclicker", &Settings::Autoclicker));
-		if (Settings::Autoclicker) if (ImGui::SliderInt("CPS", &Settings::AutoclickerCount, 1, 20));
+		ImGui::Checkbox("Autoclicker", &Settings::Autoclicker);
+		if (Settings::Autoclicker)
+		{
+			ImGui::SliderInt("CPS", &Settings::AutoclickerCount, 1, 20);
+		}
 
-		if (ImGui::Checkbox("No Hit Delay", &Settings::NoHitDelay));
+		ImGui::Checkbox("No Hit Delay", &Settings::NoHitDelay);
 
-		if (ImGui::Checkbox("No Build Delay", &Settings::NoBuildDelay));
+		ImGui::Checkbox("No Build Delay", &Settings::NoBuildDelay);
 
-		if (ImGui::Checkbox("Hitbox Extender", &Settings::HitBoxExtender));
+		ImGui::Checkbox("Hitbox Extender", &Settings::HitBoxExtender);
 		if (Settings::HitBoxExtender)
 		{
-			if (ImGui::SliderFloat("Width", &Settings::HitBoxWidth, 0, 3));
-			if (ImGui::SliderFloat("Height", &Settings::HitBoxHeight, 0, 3));
+			ImGui::SliderFloat("Width", &Settings::HitBoxWidth, 0, 3);
+			ImGui::SliderFloat("Height", &Settings::HitBoxHeight, 0, 3);
 		}
+	}
+
+	if (ImGui::CollapsingHeader("ESP"))
+	{
+		ImGui::Checkbox("Player", &Settings::PlayerESP);
+		ImGui::Checkbox("Chest", &Settings::ChestESP);
 	}
 
 	if (ImGui::CollapsingHeader("PROTECTION"))
 	{
-		if (ImGui::Checkbox("Anti Bot", &Settings::AntiBot));
+		ImGui::Checkbox("Anti Bot", &Settings::AntiBot);
 		if (Settings::AntiBot)
 		{
-			if (ImGui::Checkbox("Name Flag", &Settings::AntiBotNameFlag));
-			if (ImGui::Checkbox("Ping Flag", &Settings::AntiBotPingFlag));
-			if (ImGui::Checkbox("Risky Ping Flag", &Settings::AntiBotRiskyPingFlag));
-			if (ImGui::Checkbox("UUID Flag", &Settings::AntiBotUUIDFlag));
+			ImGui::Checkbox("Name Flag", &Settings::AntiBotNameFlag);
+			ImGui::Checkbox("Ping Flag", &Settings::AntiBotPingFlag);
+			ImGui::Checkbox("Risky Ping Flag", &Settings::AntiBotRiskyPingFlag);
+			ImGui::Checkbox("UUID Flag", &Settings::AntiBotUUIDFlag);
 		}
 	}
 
 	if (ImGui::CollapsingHeader("VISUAL"))
 	{
-		if (ImGui::Checkbox("Frame Spoof", &Settings::FrameSpoof));
-		if (Settings::FrameSpoof) if (ImGui::SliderInt("Frames", &Settings::FrameSpoofValue, -1337, 1337));
+		ImGui::Checkbox("Frame Spoof", &Settings::FrameSpoof);
+		if (Settings::FrameSpoof)
+		{
+			ImGui::SliderInt("Frames", &Settings::FrameSpoofValue, -1337, 1337);
+		}
 
-		if (ImGui::Checkbox("Ping Spoof", &Settings::PingSpoof));
-		if (Settings::PingSpoof) if (ImGui::SliderInt("Latency", &Settings::PingSpoofValue, -1337, 1337));
+		ImGui::Checkbox("Ping Spoof", &Settings::PingSpoof);
+		if (Settings::PingSpoof)
+		{
+			ImGui::SliderInt("Latency", &Settings::PingSpoofValue, -1337, 1337);
+		}
 
-		if (ImGui::Checkbox("No Fire", &Settings::NoFire));
-
-		if (ImGui::Checkbox("Player ESP", &Settings::PlayerESP));
+		ImGui::Checkbox("No Fire", &Settings::NoFire);
 	}
 
 	if (ImGui::CollapsingHeader("HYPIXEL"))
 	{
-		if (ImGui::Checkbox("Murder Expose", &Settings::MurderExpose));
+		ImGui::Checkbox("Murder Expose", &Settings::MurderExpose);
 	}
 
 	if (ImGui::CollapsingHeader("MISC"))
 	{
+		if (ImGui::Checkbox("Name Spoof", &Settings::NameSpoof)) NameSpoofer::Toggle();
+		if (Settings::NameSpoof)
+		{
+			ImGui::Text(Settings::NameSpoofValue.c_str());
+		}
+
 		if (ImGui::Button("Uninject")) Settings::ShouldUninject = true;
 	}
 
 	ImGui::End();
-	// MAIN GUI END
+}
 
-	// INFO WINDOW START
-	ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
-	ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_FirstUseEver);
-	ImGui::SetNextWindowBgAlpha(0.25f);
-	bool* info_open = (bool*)0;
-	ImGui::Begin("Info", info_open, window_flags);
-	ImGui::Text(("FPS: " + std::to_string(Settings::DebugFPS) + " Ping: " + std::to_string(Settings::DebugPing)).c_str());
-
-	ImGui::End();
-	// INFO WINDOW END
-
-	// CONSOLE WINDOW START
+void GUI::RenderConsole()
+{
 	ImGui::SetNextWindowSize(ImVec2(400, 300));
 	ImGui::SetNextWindowBgAlpha(0.25f);
 	bool* debug_open = (bool*)0;
@@ -200,7 +205,56 @@ void GUI::Render()
 	}
 
 	ImGui::End();
-	// CONSOLE WINDOW END
+}
+
+void GUI::RenderInfo()
+{
+	ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav;
+	ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_FirstUseEver);
+	ImGui::SetNextWindowBgAlpha(0.25f);
+	bool* info_open = (bool*)0;
+	ImGui::Begin("Info", info_open, window_flags);
+	ImGui::Text(("FPS: " + std::to_string(Settings::DebugFPS) + " Ping: " + std::to_string(Settings::DebugPing)).c_str());
+
+	ImGui::End();
+}
+
+void GUI::RenderESP()
+{
+	ImGui::SetNextWindowPos(ImVec2(0, 0));
+	ImGui::SetNextWindowSize(ImVec2(Settings::DebugWidth, Settings::DebugHeight));
+	ImGui::Begin("ESP", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoBackground);
+
+	auto pDrawList = ImGui::GetWindowDrawList();
+
+	if (Settings::PlayerESP)
+	{
+		/*pDrawList->AddRect(ImVec2(10, 10), ImVec2(100, 100), ImColor(255, 0, 0));
+		pDrawList->AddText(ImVec2(10, 10), ImColor(255, 0, 0), "test");*/
+	}
+
+	if (Settings::ChestESP)
+	{
+
+	}
+
+	ImGui::End();
+}
+
+void GUI::Render()
+{
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+
+	if (Enabled)
+	{
+		RenderMain();
+		RenderInfo();
+		RenderConsole();
+	}
+
+	RenderESP();
 
 	ImGui::EndFrame();
 	ImGui::Render();
@@ -223,7 +277,7 @@ void GUI::OnSwapBuffers(HDC hdc)
 
         Create();
     }
-	else if (Enabled && Settings::CanRenderMenu) Render();
+	else if (Settings::CanRenderMenu) Render();
 }
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);

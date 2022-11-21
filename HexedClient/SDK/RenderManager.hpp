@@ -1,19 +1,14 @@
 #pragma once
 #include "JNIHelper.hpp"
 
-class Item
+class RenderManager
 {
 private:
 	jobject CurrentObject = NULL;
 	jclass CurrentClass = NULL;
 
-	jmethodID getItemIDMethodID = NULL;
-	jint getItemIDInt = NULL;
-
 public:
-	Item(jobject obj);
+	RenderManager(jobject obj);
 	jobject GetCurrentObject();
 	jclass GetCurrentClass();
-	
-	jint GetItemID();
 };

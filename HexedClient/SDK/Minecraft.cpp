@@ -26,7 +26,7 @@ LocalPlayer Minecraft::getLocalPlayer()
 	{
 		if (getLocalPlayerFieldID == NULL)
 		{
-			getLocalPlayerFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71439_g", "Lnet/minecraft/client/entity/EntityPlayerSP;");
+			getLocalPlayerFieldID = JNIHelper::IsForge() ? JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71439_g", "Lnet/minecraft/client/entity/EntityPlayerSP;") : JNIHelper::env->GetFieldID(GetCurrentClass(), "h", "Lbew;");
 			if (getLocalPlayerFieldID == NULL) return NULL;
 		}
 
@@ -50,7 +50,7 @@ WorldClient Minecraft::getWorld()
 	{
 		if (getWorldFieldID == NULL)
 		{
-			getWorldFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71441_e", "Lnet/minecraft/client/multiplayer/WorldClient;");
+			getWorldFieldID = JNIHelper::IsForge() ? JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71441_e", "Lnet/minecraft/client/multiplayer/WorldClient;") : JNIHelper::env->GetFieldID(GetCurrentClass(), "f", "Lbdb;");
 			if (getWorldFieldID == NULL) return NULL;
 		}
 		
@@ -74,7 +74,7 @@ NetworkManager Minecraft::getNetworkManager()
 	{
 		if (getNetworkManagerFieldID == NULL)
 		{
-			getNetworkManagerFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71453_ak", "Lnet/minecraft/client/network/NetworkManager;");
+			getNetworkManagerFieldID = JNIHelper::IsForge() ? JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71453_ak", "Lnet/minecraft/client/network/NetworkManager;") : JNIHelper::env->GetFieldID(GetCurrentClass(), "av", "Lek;");
 			if (getNetworkManagerFieldID == NULL) return NULL;
 		}
 
@@ -98,7 +98,7 @@ ServerData Minecraft::getServerData()
 	{
 		if (getServerDataFieldID == NULL)
 		{
-			getServerDataFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71422_O", "Lnet/minecraft/client/multiplayer/ServerData;");
+			getServerDataFieldID = JNIHelper::IsForge() ? JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71422_O", "Lnet/minecraft/client/multiplayer/ServerData;") : JNIHelper::env->GetFieldID(GetCurrentClass(), "Q", "Lbde;");
 			if (getServerDataFieldID == NULL) return NULL;
 		}
 
@@ -114,13 +114,61 @@ ServerData Minecraft::getServerData()
 	return ServerDataInstance;
 }
 
+RenderManager Minecraft::getRenderManager()
+{
+	if (GetCurrentClass() == NULL) return NULL;
+
+	if (RenderManagerInstance.GetCurrentClass() == NULL)
+	{
+		if (getRenderManagerFieldID == NULL)
+		{
+			getRenderManagerFieldID = JNIHelper::IsForge() ? JNIHelper::env->GetFieldID(GetCurrentClass(), "field_175616_W", "Lnet/minecraft/client/renderer/entity/RenderManager;") : JNIHelper::env->GetFieldID(GetCurrentClass(), "aa", "Lbiu;");
+			if (getRenderManagerFieldID == NULL) return NULL;
+		}
+
+		if (getRenderManagerObject == NULL)
+		{
+			getRenderManagerObject = JNIHelper::env->GetObjectField(GetCurrentObject(), getRenderManagerFieldID);
+			if (getRenderManagerObject == NULL) return NULL;
+		}
+
+		RenderManagerInstance = RenderManager(getRenderManagerObject);
+	}
+
+	return RenderManagerInstance;
+}
+
+Session Minecraft::getSession()
+{
+	if (GetCurrentClass() == NULL) return NULL;
+
+	if (SessionInstance.GetCurrentClass() == NULL)
+	{
+		if (getSessionFieldID == NULL)
+		{
+			getSessionFieldID = JNIHelper::IsForge() ? JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71449_j", "Lnet/minecraft/util/Session;") : JNIHelper::env->GetFieldID(GetCurrentClass(), "ae", "Lavm;");
+			if (getSessionFieldID == NULL) return NULL;
+		}
+
+		if (getSessionObject == NULL)
+		{
+			getSessionObject = JNIHelper::env->GetObjectField(GetCurrentObject(), getSessionFieldID);
+			if (getSessionObject == NULL) return NULL;
+		}
+
+		SessionInstance = Session(getSessionObject);
+	}
+
+	return SessionInstance;
+}
+
 void Minecraft::SetLeftClickDelay(int count)
 {
 	if (GetCurrentClass() == NULL) return;
 
 	if (leftClickFieldID == NULL)
 	{
-		leftClickFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71429_W", "I");
+		leftClickFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), JNIHelper::IsForge() ? "field_71429_W" : "ag", "I");
 		if (leftClickFieldID == NULL) return;
 	}
 
@@ -133,7 +181,7 @@ void Minecraft::SetRightClickDelay(int count)
 
 	if (rightClickFieldID == NULL)
 	{
-		rightClickFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71467_ac", "I");
+		rightClickFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), JNIHelper::IsForge() ? "field_71467_ac" : "ap", "I");
 		if (rightClickFieldID == NULL) return;
 	}
 
@@ -146,7 +194,7 @@ void Minecraft::LeftClick()
 
 	if (leftClickMethodID == NULL)
 	{
-		leftClickMethodID = JNIHelper::env->GetMethodID(GetCurrentClass(), "func_147116_af", "()V");
+		leftClickMethodID = JNIHelper::env->GetMethodID(GetCurrentClass(), JNIHelper::IsForge() ? "func_147116_af" : "aw", "()V");
 		if (leftClickMethodID == NULL) return;
 	}
 
@@ -159,7 +207,7 @@ void Minecraft::RightClick()
 
 	if (rightClickMethodID == NULL)
 	{
-		rightClickMethodID = JNIHelper::env->GetMethodID(GetCurrentClass(), "func_147121_ag", "()V");
+		rightClickMethodID = JNIHelper::env->GetMethodID(GetCurrentClass(), JNIHelper::IsForge() ? "func_147121_ag" : "ax", "()V");
 		if (rightClickMethodID == NULL) return;
 	}
 
@@ -174,7 +222,7 @@ bool Minecraft::InGameHasFocus()
 	{
 		if (gameHasFocusFieldID == NULL)
 		{
-			gameHasFocusFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71415_G", "Z");
+			gameHasFocusFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), JNIHelper::IsForge() ? "field_71415_G" : "w", "Z");
 			if (gameHasFocusFieldID == NULL) return NULL;
 		}
 
@@ -192,7 +240,7 @@ int Minecraft::GetFPS()
 	{
 		if (fpsCounterFieldID == NULL)
 		{
-			fpsCounterFieldID = JNIHelper::env->GetStaticFieldID(GetCurrentClass(), "field_71470_ab", "I");
+			fpsCounterFieldID = JNIHelper::env->GetStaticFieldID(GetCurrentClass(), JNIHelper::IsForge() ? "field_71470_ab" : "ao", "I");
 			if (fpsCounterFieldID == NULL) return NULL;
 		}
 
@@ -208,9 +256,45 @@ void Minecraft::SetFPS(jint FPS)
 
 	if (fpsCounterFieldID == NULL)
 	{
-		fpsCounterFieldID = JNIHelper::env->GetStaticFieldID(GetCurrentClass(), "field_71470_ab", "I");
+		fpsCounterFieldID = JNIHelper::env->GetStaticFieldID(GetCurrentClass(), JNIHelper::IsForge() ? "field_71470_ab" : "ao", "I");
 		if (fpsCounterFieldID == NULL) return;
 	}
 
 	JNIHelper::env->SetStaticIntField(GetCurrentClass(), fpsCounterFieldID, FPS);
+}
+
+int Minecraft::GetDisplayHeight()
+{
+	if (GetCurrentClass() == NULL) return NULL;
+
+	if (displayHeightInt == NULL)
+	{
+		if (displayHeightFieldID == NULL)
+		{
+			displayHeightFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), JNIHelper::IsForge() ? "field_71440_d" : "e", "I");
+			if (displayHeightFieldID == NULL) return NULL;
+		}
+
+		displayHeightInt = JNIHelper::env->GetIntField(GetCurrentClass(), displayHeightFieldID);
+	}
+
+	return displayHeightInt;
+}
+
+int Minecraft::GetDisplayWidth()
+{
+	if (GetCurrentClass() == NULL) return NULL;
+
+	if (displayWidthInt == NULL)
+	{
+		if (displayWidthFieldID == NULL)
+		{
+			displayWidthFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), JNIHelper::IsForge() ? "field_71443_c" : "d", "I");
+			if (displayWidthFieldID == NULL) return NULL;
+		}
+
+		displayWidthInt = JNIHelper::env->GetIntField(GetCurrentClass(), displayWidthFieldID);
+	}
+
+	return displayWidthInt;
 }

@@ -27,7 +27,7 @@ jint NetworkPlayerInfo::GetPing()
 	{
 		if (getPingFieldID == NULL)
 		{
-			getPingFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_78829_b", "I");
+			getPingFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), JNIHelper::IsForge() ? "field_78829_b" : "c", "I");
 			if (getPingFieldID == NULL) return NULL;
 		}
 
@@ -43,7 +43,7 @@ void NetworkPlayerInfo::SetPing(jint latency)
 
 	if (getPingFieldID == NULL)
 	{
-		getPingFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_78829_b", "I");
+		getPingFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), JNIHelper::IsForge() ? "field_78829_b" : "c", "I");
 		if (getPingFieldID == NULL) return;
 	}
 

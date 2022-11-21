@@ -28,7 +28,7 @@ std::vector<EntityPlayer> World::getPlayerList()
 
 	if (getPlayerListFieldID == NULL)
 	{
-		getPlayerListFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_73010_i", "Ljava/util/List;");
+		getPlayerListFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), JNIHelper::IsForge() ? "field_73010_i" : "j", "Ljava/util/List;");
 		if (getPlayerListFieldID == NULL) return cachedPlayers;
 	}
 
@@ -67,7 +67,7 @@ std::vector<Entity> World::getEntityList()
 
 	if (getEntityListFieldID == NULL)
 	{
-		getEntityListFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_72996_f", "Ljava/util/List;");
+		getEntityListFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), JNIHelper::IsForge() ? "field_72996_f" : "f", "Ljava/util/List;");
 		if (getEntityListFieldID == NULL) return result;
 	}
 

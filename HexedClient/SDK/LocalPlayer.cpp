@@ -26,7 +26,7 @@ NetHandlerPlayClient LocalPlayer::getNetHandlerPlayClient()
 	{
 		if (getNetHandlerPlayClientFieldID == NULL)
 		{
-			getNetHandlerPlayClientFieldID = JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71174_a", "Lnet/minecraft/client/network/NetHandlerPlayClient;");
+			getNetHandlerPlayClientFieldID = JNIHelper::IsForge() ? JNIHelper::env->GetFieldID(GetCurrentClass(), "field_71174_a", "Lnet/minecraft/client/network/NetHandlerPlayClient;") : JNIHelper::env->GetFieldID(GetCurrentClass(), "a", "Lbcy;");
 			if (getNetHandlerPlayClientFieldID == NULL) return NULL;
 		}
 
@@ -48,7 +48,7 @@ void LocalPlayer::setSprinting(jboolean sprinting)
 
 	if (setSprintingMethodID == NULL)
 	{
-		setSprintingMethodID = JNIHelper::env->GetMethodID(GetCurrentClass(), "func_70031_b", "(Z)V");
+		setSprintingMethodID = JNIHelper::env->GetMethodID(GetCurrentClass(), JNIHelper::IsForge() ? "func_70031_b" : "d", "(Z)V");
 		if (setSprintingMethodID == NULL) return;
 	}
 
@@ -61,7 +61,7 @@ void LocalPlayer::swingItem()
 
 	if (swingItemMethodID == NULL)
 	{
-		swingItemMethodID = JNIHelper::env->GetMethodID(GetCurrentClass(), "func_71038_i", "()V");
+		swingItemMethodID = JNIHelper::env->GetMethodID(GetCurrentClass(), JNIHelper::IsForge() ? "func_71038_i" : "bw", "()V");
 		if (swingItemMethodID == NULL) return;
 	}
 
