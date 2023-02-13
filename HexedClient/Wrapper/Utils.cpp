@@ -1,17 +1,22 @@
 #include "Utils.hpp"
 #include <vector>
+#include <random>
 
-std::string Utils::RandomString(const int len)
+std::string Utils::RandomString(std::size_t length)
 {
     static const char alphanum[] = "0123456789" "ABCDEFGHIJKLMNOPQRSTUVWXYZ" "abcdefghijklmnopqrstuvwxyz";
-    std::string tmp_s;
-    tmp_s.reserve(len);
 
-    for (int i = 0; i < len; ++i) {
-        tmp_s += alphanum[rand() % (sizeof(alphanum) - 1)];
+    std::mt19937 engine(std::time(nullptr));
+    std::uniform_int_distribution<std::size_t> distribution(0, sizeof(alphanum) - 2);
+
+    std::string result;
+    result.reserve(length);
+
+    for (std::size_t i = 0; i < length; ++i) {
+        result += alphanum[distribution(engine)];
     }
 
-    return tmp_s;
+    return result;
 }
 
 std::string Utils::time_to_string(const char* format, tm* time)
